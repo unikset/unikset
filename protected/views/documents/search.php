@@ -12,9 +12,9 @@ $this->breadcrumbs=array(
 </div>
 
 <?php
-if (isset($_POST['Countries']) && $_POST['Countries'][2][id]) 
+if (isset($_POST['Countries']) && $_POST['Countries'][2]['id']) 
 {
-    $country = $_POST['Countries'][2][id];
+    $country = $_POST['Countries'][2]['id'];
 }
 else 
 {
@@ -22,9 +22,9 @@ else
 }
 //echo CVarDumper::dump($country, 10, TRUE);
 
-if (isset($_POST['Regions']) && $_POST['Regions'][3][id]) 
+if (isset($_POST['Regions']) && $_POST['Regions'][3]['id']) 
 {
-    $region = $_POST['Regions'][3][id];
+    $region = $_POST['Regions'][3]['id'];
 }
 else 
 {
@@ -32,9 +32,9 @@ else
 }
 //echo CVarDumper::dump($country, 10, TRUE);
 
-if (isset($_POST['Cities']) && $_POST['Cities'][4][id]) 
+if (isset($_POST['Cities']) && $_POST['Cities'][4]['id']) 
 {
-    $city = $_POST['Cities'][4][id];
+    $city = $_POST['Cities'][4]['id'];
 }
 else 
 {

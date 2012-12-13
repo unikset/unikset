@@ -86,7 +86,7 @@ class Documents extends CActiveRecord
                     
 			'universityDocument'   => array(self::HAS_MANY, 'UniversityDocuments', 'document_id', 'joinType'=>'INNER JOIN'),
                         'university'           => array(self::HAS_MANY, 'Universities', array('university_id'=>'id') ,'through'=>'universityDocument', 'joinType'=>'INNER JOIN'),
-                        'location'             => array(self::HAS_MANY, 'Locations', array('location_id'=>'id') ,'through'=>'university', 'joinType'=>'INNER JOIN'),
+                        'location'             => array(self::HAS_MANY, 'Cities', array('location_id'=>'id') ,'through'=>'university', 'joinType'=>'INNER JOIN'),
 		);
 	}
 
@@ -171,7 +171,7 @@ class Documents extends CActiveRecord
                     {
                         $criteria->with=array('location'=>array(
                                 'select'=>'',
-                                'condition'=>'location.id=:city',
+                                'condition'=>'cities.id=:city',
                                 'params'=>array(':city'=>$city_id),
                                 'together'=>true,
                         ));   
@@ -184,7 +184,7 @@ class Documents extends CActiveRecord
                          */
                         $criteria->with=array('location'=>array(
                                 'select'=>'',
-                                'condition'=>'location.id=:region',
+                                'condition'=>'cities.region_id=:region',
                                 'params'=>array(':region'=>$region_id),
                                 'together'=>true,
                         ));  
@@ -195,60 +195,12 @@ class Documents extends CActiveRecord
                          * Если нет ни города ни региона в запросе, но есть страна
                          * Добавляем в выборку страну
                          */
-                        if ($country_id != -1)
-                        {
-                            
-                            $query = "SELECT
-                                        t1.`id` AS  country,
-                                        t2.`id` AS region,
-                                        t3.`id` AS city
-                                    FROM `locations` t1
-                                    JOIN (
-                                            SELECT 
-                                               tt2.*
-                                            FROM 
-                                              `locations` tt2
-                                          ) t2 ON t2.`parent_id` = t1.`id`
-                                    JOIN (
-                                            SELECT 
-                                               tt3.*
-                                            FROM 
-                                              `locations` tt3
-                                         ) t3 ON t2.`id` = t3.`parent_id`
-                                    WHERE t1.id=".$country_id;
-                            $command = Yii::app()->db->createCommand($query);
-                            $result = $command->queryAll();
-                            
-                            foreach ($result as $loc)
-                            {
-//                                $criteria->with=array('location'=>array(
-//                                        'select'=>'',
-//                                        'condition'=>'location.id=:region',
-//                                        'params'=>array(':region'=>$loc['region']),
-//                                        'together'=>true,
-//                                ));
-                                $criteria->with=array('location'=>array(
-                                        'select'=>'',
-                                        'condition'=>'location.id=:city',
-                                        'params'=>array(':city'=>$loc['city']),
-                                        'together'=>true,
-                                ));
-                                $criteria->with=array('university'=>array(
-                                        'select'=>'',
-                                        'condition'=>'university.location_id=:uni',
-                                        'params'=>array(':uni'=>$loc['city']),
-                                        'together'=>true,
-                                ));
-                            }
-                            
-//                            $criteria->with=array('location'=>array(
-//                                    'select'=>'',
-//                                    'condition'=>'location.id=:country',
-//                                    'params'=>array(':country'=>$country_id),
-//                                    'together'=>true,
-//                            ));
-
-                        }
+                        $criteria->with=array('location'=>array(
+                                'select'=>'',
+                                'condition'=>'location.country_id=:country',
+                                'params'=>array(':country'=>$country_id),
+                                'together'=>true,
+                        )); 
                     }
                 }
                 /**

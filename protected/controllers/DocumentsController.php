@@ -526,6 +526,7 @@ class DocumentsController extends Controller
     
     public function actionGetRegions()
     {
+         $lect1 = NULL;
             /**
              * Если выбрана локация пытаемся вернуть данные в следующий выпадающий список
              */
@@ -594,6 +595,8 @@ class DocumentsController extends Controller
     
     public function actionGetCities()
     {
+         $lect1 = NULL;
+         
             /**
              * Если выбрана локация пытаемся вернуть данные в следующий выпадающий список
              */
@@ -662,6 +665,8 @@ class DocumentsController extends Controller
     
     public function actionGetUniversity()
     {
+         $lect1 = NULL;
+         $loc1 = NULL;
                 /**
                  * Если запрос ничего не вернул пытаемся получить список университетов,
                  * Потому, что это город и по городу можно получить универы
@@ -740,6 +745,8 @@ class DocumentsController extends Controller
      */
     public function actionDynamiccat()
     {
+         $lect1 = NULL;
+         
         if ($_POST['uplevel_id'] != "-1" && $_POST['uplevel_id'] != "-2")
         {
             /**
@@ -887,6 +894,8 @@ class DocumentsController extends Controller
 
     public function actionDynamicuniver()
     {
+         $lect1 = NULL;
+         
         if ($_POST[discipline] != -1 && $_POST[discipline] != -2)
         {
             $lect1 = '<option value="">select lecturer</option>';
@@ -914,6 +923,8 @@ class DocumentsController extends Controller
      */
     public function actionDynamicuniflag()
     {
+        $lect1 = null;
+        
         $loc1 = '<option value="">select...</option>';
         if ($_POST['uni_flag'] == 1)
         {
@@ -952,10 +963,11 @@ class DocumentsController extends Controller
      */
     public function actionDynamiclecturer()
     {
+        $lect1 = NULL;
         /**
          * Если дисциплина определена
          */
-        if ($_POST[discipline] != -1 && $_POST[discipline] != -2)
+        if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
         {
             if($_POST['uni_flag']!=-2)
             {
@@ -967,7 +979,7 @@ class DocumentsController extends Controller
                /**
                 * Если универ определен
                 */
-               if ($_POST[uni] != -1 && $_POST[uni] != -2)
+               if ($_POST['uni'] != -1 && $_POST['uni'] != -2)
                {
                    /**
                     * тип локации записываем 10, то есть для универа
@@ -977,9 +989,9 @@ class DocumentsController extends Controller
                    /**
                     * А это id размещения - город, регион, страна
                     */
-                   $loc_id = $_POST[uni];
+                   $loc_id = $_POST['uni'];
                }
-               else if ($_POST[city] != -1 && $_POST[city] != -2)
+               else if ($_POST['city'] != -1 && $_POST['city'] != -2)
                {
                    /**
                     * Если определен город тип локации = 4 для выборки с городом
@@ -988,9 +1000,9 @@ class DocumentsController extends Controller
                    /**
                     * иденитфиктор города
                     */
-                   $loc_id = $_POST[city];
+                   $loc_id = $_POST['city'];
                }
-               else if ($_POST[country] != -1 && $_POST[country] != -2)
+               else if ($_POST['country'] != -1 && $_POST['country'] != -2)
                {
                    /**
                     * Если определена страна ставим тип локации для выборки со страной
@@ -999,7 +1011,7 @@ class DocumentsController extends Controller
                    /**
                     * Идентификатор страны
                     */
-                   $loc_id = $_POST[country];
+                   $loc_id = $_POST['country'];
                }
                else
                {
@@ -1007,7 +1019,7 @@ class DocumentsController extends Controller
                     * Если ничего не определено, ставил тип локации 0, для выборки с документом
                     */
                    $loc_type = 0;
-                   $loc_id = $_POST[uni_flag];
+                   $loc_id = $_POST['uni_flag'];
                }
 
                //var_dump($_POST[discipline], $loc_type, $loc_id);exit;
@@ -1015,7 +1027,7 @@ class DocumentsController extends Controller
                 * Пробуем получить лекции. Дополнительные параметры служат 
                 * для жадной загрузки вместе с универами странами , городами , дисциплинами и документами
                 */
-               $data1 = Lecturers::model()->searchByFlag($_POST[discipline], $loc_type, $loc_id);
+               $data1 = Lecturers::model()->searchByFlag($_POST['discipline'], $loc_type, $loc_id);
                //echo CVarDumper::dump($data1, 100, TRUE);exit;
                /**
                 * Формируем массив для выпадающего списка

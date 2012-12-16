@@ -17,7 +17,10 @@
     }
 </script>    
 <div class="wide form">
-
+     <?php $this->widget('SearchWidget');?>
+    
+    <?php $this->widget('SearchTagWidget');?>
+    
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'action' => Yii::app()->createUrl($this->route),
@@ -26,6 +29,7 @@
     ?>
     <?php //текстовое поле для полнотекстового поиска?>
     <div class="row">
+       
         <?php //echo $form->label($doc, 'link'); ?>
         <?php //echo $form->textField($doc, 'link'); ?>
     </div>

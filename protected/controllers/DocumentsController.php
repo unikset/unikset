@@ -28,7 +28,7 @@ class DocumentsController extends Controller
     {
         return array(
             array('allow',
-                'actions' => array('create', 'index', 'view', 'search', 'getRegions', 'getCities', 'getUniversity', 'dynamiccat', 'dynamicuniflag', 'dynamiclecturer', 'dynamicuniver', 'dynamiclecturer2', 'dynamiclecturer_new'),
+                'actions' => array('create', 'index', 'view', 'search', 'textSearch', 'tagSearch', 'getRegions', 'getCities', 'getUniversity', 'dynamiccat', 'dynamicuniflag', 'dynamiclecturer', 'dynamicuniver', 'dynamiclecturer2', 'dynamiclecturer_new'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -170,6 +170,10 @@ class DocumentsController extends Controller
              */
             if ($model->save())
             {
+                if($this->parseTags($model->id, $model->file_name, $model->link))
+                {
+                    $success='Теги сохранены';
+                }
                 /**
                  * Запись в смежную таблицу новая по этому создаем новый объект
                  */
@@ -200,7 +204,7 @@ class DocumentsController extends Controller
                                 if($document_lecturers->save())
                                 {
                                     //echo CVarDumper::dump($document_lecturers->id, 10, TRUE);exit;
-                                    Yii::app()->user->setFlash('message','Document is sent to the moderation');
+                                    Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
                                     $this->redirect(Yii::app()->homeUrl);
                                 }
                             }
@@ -227,7 +231,7 @@ class DocumentsController extends Controller
                                     $document_lecturers->lecturer_id = $exists_lectures->id;
                                     if($document_lecturers->save())
                                     {
-                                        Yii::app()->user->setFlash('message','Document is sent to the moderation');
+                                        Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
                                         $this->redirect(Yii::app()->homeUrl);
                                     }
                                 }
@@ -278,7 +282,7 @@ class DocumentsController extends Controller
                                             $document_lecturers->lecturer_id = $lecturers->id;
                                             if($document_lecturers->save())
                                             {
-                                                Yii::app()->user->setFlash('message','Document is sent to the moderation');
+                                                Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
                                                 $this->redirect(Yii::app()->homeUrl);
                                             }
                                     }
@@ -301,7 +305,7 @@ class DocumentsController extends Controller
                             if($document_lecturers->save())
                             {
                                 //echo CVarDumper::dump($document_lecturers->id, 10, TRUE);exit;
-                                Yii::app()->user->setFlash('message','Document is sent to the moderation');
+                                Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
                                 $this->redirect(Yii::app()->homeUrl);
                             }
                         }
@@ -328,7 +332,7 @@ class DocumentsController extends Controller
                                  $document_lecturers->lecturer_id = $exists_lectures->id;
                                  if($document_lecturers->save())
                                  {
-                                     Yii::app()->user->setFlash('message','Document is sent to the moderation');
+                                     Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
                                      $this->redirect(Yii::app()->homeUrl);
                                  }
                             }
@@ -377,7 +381,7 @@ class DocumentsController extends Controller
                                     $document_lecturers->lecturer_id = $lecturers->id;
                                     if($document_lecturers->save())
                                     {
-                                        Yii::app()->user->setFlash('message','Document is sent to the moderation');
+                                        Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
                                         $this->redirect(Yii::app()->homeUrl);
                                     }
                                 }
@@ -394,6 +398,151 @@ class DocumentsController extends Controller
         $this->render('create', array(
             'model' => $model,
         ));
+    }
+
+    /**
+     * Парсинг документа и сохранение тегов в таблицу Tags
+     * Сохранение записей в связывающую таблицу Document_Tags
+     * @param integer $id_document
+     * @param string $filename
+     * @param string $link
+     */
+    public function parseTags($id_document, $filename = null, $link = null)
+    {
+        /**
+         * Импортируем классы расширения парсера пдф документов
+         */
+        Yii::import('application.extensions.docparser.*');
+        
+        /**
+         * Если передано имя файла
+         */
+        if($filename)
+        {
+            /**
+             * Получаем имя файла
+             */
+            $filename = $_SERVER['DOCUMENT_ROOT'].'/files/'.$filename;
+        }
+        /**
+         * Если передана ссылка на файл
+         */
+        if($link)
+        {
+            /**
+             * Получаем ссылку на файл
+             */
+            $filename = $link;
+        }
+        
+        /**
+         * Получаем контент(в linux заменить на соответствующий код)
+         */
+        $content = shell_exec('C:\\xpdf\\bin\\pdftotext '.$filename.' -');
+	/**
+         * Преобразуем кодировку
+         */
+        $content = mb_convert_encoding($content,'UTF-8');
+
+        /**
+         * Создаем объект парсера(с заданными кодировками)
+         */
+        $wp = new Text_WordsParser(array('Latin', 'Cyrillic'));
+        
+        /**
+         * Получаем текст обработанный парсером
+         */
+        $text = $wp->parse($content, $words, $sentences, $uniques, $offset_map);
+
+        /**
+         * Получаем массив слов и их вес слово=>вес
+         */
+        $wes = $wp->weights($uniques);
+        
+        foreach ($wes as $k => $v)
+        {
+            /**
+             * Если слово является числом, удаляем элемент массива
+             */
+            if(is_numeric($k))
+            {
+                unset($wes[$k]);
+            }
+            /**
+             * Если длинна слова меньше трех символов, удаляем элемент массива
+             */
+            if(strlen($k)<3)
+            {
+                unset($wes[$k]);
+            }
+        }
+        /**
+         * Сохранение тегов в бд
+         */
+        $i=0;//инициалиируем счетчик
+        foreach ($wes as $title => $weight)
+        {
+            /**
+             * Проверяем тег на существование в таблице
+             */
+            $criteria = new CDbCriteria();
+            $criteria->compare('title', $title);
+            $exist_tag = Tags::model()->find($criteria);
+            //Если тег есть, сохраняем данные только в таблицу Document_Tags
+            if($exist_tag)
+            {
+                $tag_doc = new DocumentTags();
+                $tag_doc->document_id = $id_document;
+                $tag_doc->tag_id = $exist_tag->id;
+                $tag_doc->weight = $weight;
+
+                if(!$tag_doc->save())
+                {
+                    $errors[]=$tag_doc->errors;
+                }
+            }
+            else
+            {
+                /**
+                 * Если такого тега еще нет в таблице
+                 * Записываем тег в таблицу
+                 */
+                $tag = new Tags();
+                $tag_doc = new DocumentTags();
+
+                $tag->title = $title;
+                if($tag->save())
+                {
+                    /**
+                     * Если тег сохранен записываем данные в связанную таблицу
+                     */
+                    $tag_doc->document_id = $id_document;
+                    $tag_doc->tag_id = $tag->id;
+                    $tag_doc->weight = $weight;
+
+                    if(!$tag_doc->save())
+                    {
+                        $errors[]='Error - on '.$i++.' iteration saved Documents_Tags';
+                    }
+                }
+                else
+                {
+                    $errors[] = 'Error insert tag on '.$i.' interation';
+                }
+            }
+        }
+        /**
+         * Если есть ошибки выводим их для отладки
+         */
+        if(isset($errors))
+        {
+            echo CVarDumper::dump($errors, 10, TRUE);
+            Yii::app()->end();
+        }
+        else
+        {
+            return TRUE;
+        }
     }
 
     /**
@@ -478,6 +627,87 @@ class DocumentsController extends Controller
         }
         $this->render('search', array(
             'doc' => $doc,
+        ));
+    }
+    
+    public function actionTextSearch()
+    {
+        $doc = new Documents();
+        
+        
+        Yii::import('application.vendors.*');
+        require_once('Zend/Search/Lucene.php');
+        
+        setlocale(LC_CTYPE, 'ru_RU.UTF-8');
+        
+        Zend_Search_Lucene_Analysis_Analyzer::setDefault(new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8());
+
+
+        if (($term = Yii::app()->getRequest()->getParam('q', null)) !== null) 
+        {
+            $index = new Zend_Search_Lucene(Yii::getPathOfAlias('application.runtime.search'));
+            $results = $index->find($term);
+            $query = Zend_Search_Lucene_Search_QueryParser::parse($term);      
+
+
+            $this->render('search', array(
+                'doc' => $doc,
+                'results'=>$results, 
+                'term'=>$term, 
+                'query'=>$query, 
+            ));
+        }
+    }
+    
+    public function actionTagSearch()
+    {
+        if(isset($_POST['query']))
+        {
+            $query_array = explode(' ', $_POST['query']);
+            $criteria = new CDbCriteria();
+            $criteria->with = 'documentTags';
+            foreach ($query_array as $term)
+            {
+                $criteria->compare('title', $term, FALSE, 'OR');
+            }
+            $results = Tags::model()->findAll($criteria);
+            
+            $criteria2 = new CDbCriteria();
+            
+            foreach ($results as $result)
+            {
+                foreach ($result->documentTags as $dt)
+                {
+                    $id_array[]=$dt->document_id;
+                }
+            }
+
+            $criteria2->addInCondition('id', $id_array);
+            $list = implode(',', $id_array);
+            
+            $doc_search=new CActiveDataProvider('Documents', array(
+                            'criteria'=>array(
+                                'condition'=>'id IN ('.$list.')',
+                            ),
+                            'pagination'=>array(
+                            'pageSize'=>20,
+                            ),
+                        )
+                    );
+            
+            $doc_search = Documents::model()->findAll($criteria2);
+            //echo CVarDumper::dump($doc_search, 10, true);
+        }
+
+
+        $doc = new Documents();
+
+        
+        
+        
+        $this->render('search', array(
+            'doc' => $doc,
+            'doc_search' => $doc_search,
         ));
     }
 

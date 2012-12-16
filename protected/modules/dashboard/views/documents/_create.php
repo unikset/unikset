@@ -68,26 +68,26 @@
                                                    if (data.loc2 == 1) $('#loc_2').show();
                                                    else $('#loc_2').hide();
                                                    
-                                                   $('#Locations_4_id').html('<option value= >select city</option>');
+                                                   $('#Cities_4_id').html('<option value= >select city</option>');
                                                    $('#Universities_id').html('<option value= >select university</option>');
                                                    $('#loc_4').hide();
                                                    $('#univer').hide();
                                                    
-                                                   $('#Locations_2_id').html(data.loc1); 
+                                                   $('#Countries_2_id').html(data.loc1); 
                                                    $('#Lecturers_id').html(data.lect1);
                                                 }")
                              ));?>
             </div>
             <?php //----------------страны ---------------------?>
             <div class="row" id="loc_2" style="display:none">
-		<?php  $country = new Locations();
-                       echo $form->label($country,'title'); ?>
+		<?php  $country = new Countries();
+                       echo $form->label($country,'country'); ?>
                 <?php  echo $form->dropDownList($country,'[2]id', array(),
                         array('prompt' => 'select country',
                               'ajax'=>array(
                                                'type'=>'POST',
-                                               'url'=>CController::createUrl('dynamiccat'),
-                                               'data' => array('uplevel_id' => 'js:exist_id("Locations_2_id")',
+                                               'url'=>CController::createUrl('getRegions'),
+                                               'data' => array('uplevel_id' => 'js:exist_id("Countries_2_id")',
                                                                'downlevel' => '0',
                                                                'downlevel_id' => 'js:exist_id("Documents_is_university_document")',
                                                                'discipline' => 'js:exist_id("Discipline_id")',
@@ -100,7 +100,7 @@
                                                    $('#Universities_id').html('<option value= >select university</option>');
                                                    $('#univer').hide();
                                                           
-                                                   $('#Locations_3_id').html(data.loc1); 
+                                                   $('#Regions_3_id').html(data.loc1); 
                                                    $('#Lecturers_id').html(data.lect1);
                                                 }"
                                            ),'class'=>'validate[required]'
@@ -108,14 +108,14 @@
             </div>
             <?php //----------------регионы---------------------?>
             <div class="row" id="loc_3" style="display:none">
-		<?php  $region = new Locations();
-                       echo $form->label($region,'title'); ?>
+		<?php  $region = new Regions();
+                       echo $form->label($region,'region'); ?>
                 <?php  echo $form->dropDownList($region,'[3]id', array(),
                         array('prompt' => 'select region',
                               'ajax'=>array(
                                                'type'=>'POST',
-                                               'url'=>CController::createUrl('dynamiccat'),
-                                               'data' => array('uplevel_id' => 'js:exist_id("Locations_3_id")',
+                                               'url'=>CController::createUrl('getCities'),
+                                               'data' => array('uplevel_id' => 'js:exist_id("Regions_3_id")',
                                                                'downlevel' => '0',
                                                                'downlevel_id' => 'js:exist_id("Documents_is_university_document")',
                                                                'discipline' => 'js:exist_id("Discipline_id")',
@@ -128,7 +128,7 @@
                                                    $('#Universities_id').html('<option value= >select university</option>');
                                                    $('#univer').hide();
                                                           
-                                                   $('#Locations_4_id').html(data.loc1); 
+                                                   $('#Cities_4_id').html(data.loc1); 
                                                    $('#Lecturers_id').html(data.lect1);
                                                 }"
                                            ),'class'=>'validate[required]'
@@ -136,16 +136,16 @@
             </div>
             <?php //----------------------города-----------------------?>
             <div class="row" id="loc_4" style="display:none">
-		<?php  $city = new Locations();
-                       echo $form->label($city,'title'); ?>
+		<?php  $city = new Cities();
+                       echo $form->label($city,'city'); ?>
                 <?php  echo $form->dropDownList($city,'[4]id', array(),
                         array('prompt' => 'select city',
                               'ajax'=>array(
                                                'type'=>'POST',
-                                               'url'=>CController::createUrl('dynamiccat'),
-                                               'data' => array('uplevel_id' => 'js:exist_id("Locations_4_id")',
+                                               'url'=>CController::createUrl('getUniversity'),
+                                               'data' => array('uplevel_id' => 'js:exist_id("Cities_4_id")',
                                                                'downlevel' => '2',
-                                                               'downlevel_id' => 'js:exist_id("Locations_2_id")',
+                                                               'downlevel_id' => 'js:exist_id("Cities_2_id")',
                                                                'discipline' => 'js:exist_id("Discipline_id")',
                                                                'todo' => 'create',),
                                                'dataType' => 'json',
@@ -169,7 +169,7 @@
                                        'type'=>'POST',
                                        'url'=>CController::createUrl('dynamicuniver'),
                                        'data' => array('uni' => 'js:exist_id("Universities_id")',
-                                                       'city' => 'js:exist_id("Locations_4_id")',
+                                                       'city' => 'js:exist_id("Cities_4_id")',
                                                        'discipline' => 'js:exist_id("Discipline_id")',
                                                        'todo' => 'create',),
                                        'dataType' => 'json',
@@ -195,8 +195,8 @@
                                        'url'=>CController::createUrl('dynamiclecturer'),
                                        'data' => array('discipline' => 'js:exist_id("Discipline_id")',
                                                        'uni' => 'js:exist_id("Universities_id")',
-                                                       'city' => 'js:exist_id("Locations_4_id")',
-                                                       'country' => 'js:exist_id("Locations_2_id")',
+                                                       'city' => 'js:exist_id("Cities_4_id")',
+                                                       'country' => 'js:exist_id("Countries_2_id")',
                                                        'uni_flag' => 'js:exist_id("Documents_is_university_document")',
                                                        'todo' => 'create',),
                                        'dataType' => 'json',

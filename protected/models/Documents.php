@@ -243,7 +243,7 @@ class Documents extends CActiveRecord
 		$criteria->compare('status',$this->status);
                 $criteria->compare('user_id',$this->user_id);
                 
-                $criteria->compare('status', 2);
+                //$criteria->compare('status', 2);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

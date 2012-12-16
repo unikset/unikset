@@ -4,6 +4,10 @@ $this->breadcrumbs=array(
 );
 ?>
 
+<?php echo CVarDumper::dump($results, 10, true);?>
+<?php echo CVarDumper::dump($term, 10, true);?>
+<?php echo CVarDumper::dump($query, 10, true);?>
+
 <h1>Documents</h1>
 
 <?php //Форма поиска документа ?>
@@ -71,10 +75,17 @@ else
     $lec_id = -1;
 }
 //echo CVarDumper::dump($lec_id, 10, TRUE);
+if(isset($doc_search))
+{
+    $this->renderPartial('_search_result', array('doc_search'=>$doc_search));
+}
+else
+{
+    $this->widget('zii.widgets.CListView', array(
+            'dataProvider'=>$doc->search($country, $region, $city, $uni, $dis_id, $lec_id),
+            'itemView'=>'_view',
+    )); 
+}
 
-$this->widget('zii.widgets.CListView', array(
-	'dataProvider'=>$doc->search($country, $region, $city, $uni, $dis_id, $lec_id),
-	'itemView'=>'_view',
-)); 
 
 ?>

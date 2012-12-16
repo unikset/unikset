@@ -28,12 +28,12 @@ class DocumentsController extends DashController
     {
         return array(
             array('allow',
-                'actions' => array('create', 'index', 'view', 'search', 'dynamiccat', 'dynamicuniflag', 'dynamiclecturer', 'dynamicuniver', 'dynamiclecturer2', 'dynamiclecturer_new'),
-                'roles' => array('admin'),
+                'actions' => array('create', 'index', 'view', 'search', 'textSearch', 'tagSearch', 'getRegions', 'getCities', 'getUniversity', 'dynamiccat', 'dynamicuniflag', 'dynamiclecturer', 'dynamicuniver', 'dynamiclecturer2', 'dynamiclecturer_new'),
+                'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('update'),
-                'roles' => array('admin'),
+                'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
                 'actions' => array('admin', 'delete'),

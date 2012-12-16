@@ -401,6 +401,151 @@ class DocumentsController extends DashController
     }
 
     /**
+     * Парсинг документа и сохранение тегов в таблицу Tags
+     * Сохранение записей в связывающую таблицу Document_Tags
+     * @param integer $id_document
+     * @param string $filename
+     * @param string $link
+     */
+    public function parseTags($id_document, $filename = null, $link = null)
+    {
+        /**
+         * Импортируем классы расширения парсера пдф документов
+         */
+        Yii::import('application.extensions.docparser.*');
+        
+        /**
+         * Если передано имя файла
+         */
+        if($filename)
+        {
+            /**
+             * Получаем имя файла
+             */
+            $filename = $_SERVER['DOCUMENT_ROOT'].'/files/'.$filename;
+        }
+        /**
+         * Если передана ссылка на файл
+         */
+        if($link)
+        {
+            /**
+             * Получаем ссылку на файл
+             */
+            $filename = $link;
+        }
+        
+        /**
+         * Получаем контент(в linux заменить на соответствующий код)
+         */
+        $content = shell_exec('C:\\xpdf\\bin\\pdftotext '.$filename.' -');
+	/**
+         * Преобразуем кодировку
+         */
+        $content = mb_convert_encoding($content,'UTF-8');
+
+        /**
+         * Создаем объект парсера(с заданными кодировками)
+         */
+        $wp = new Text_WordsParser(array('Latin', 'Cyrillic'));
+        
+        /**
+         * Получаем текст обработанный парсером
+         */
+        $text = $wp->parse($content, $words, $sentences, $uniques, $offset_map);
+
+        /**
+         * Получаем массив слов и их вес слово=>вес
+         */
+        $wes = $wp->weights($uniques);
+        
+        foreach ($wes as $k => $v)
+        {
+            /**
+             * Если слово является числом, удаляем элемент массива
+             */
+            if(is_numeric($k))
+            {
+                unset($wes[$k]);
+            }
+            /**
+             * Если длинна слова меньше трех символов, удаляем элемент массива
+             */
+            if(strlen($k)<3)
+            {
+                unset($wes[$k]);
+            }
+        }
+        /**
+         * Сохранение тегов в бд
+         */
+        $i=0;//инициалиируем счетчик
+        foreach ($wes as $title => $weight)
+        {
+            /**
+             * Проверяем тег на существование в таблице
+             */
+            $criteria = new CDbCriteria();
+            $criteria->compare('title', $title);
+            $exist_tag = Tags::model()->find($criteria);
+            //Если тег есть, сохраняем данные только в таблицу Document_Tags
+            if($exist_tag)
+            {
+                $tag_doc = new DocumentTags();
+                $tag_doc->document_id = $id_document;
+                $tag_doc->tag_id = $exist_tag->id;
+                $tag_doc->weight = $weight;
+
+                if(!$tag_doc->save())
+                {
+                    $errors[]=$tag_doc->errors;
+                }
+            }
+            else
+            {
+                /**
+                 * Если такого тега еще нет в таблице
+                 * Записываем тег в таблицу
+                 */
+                $tag = new Tags();
+                $tag_doc = new DocumentTags();
+
+                $tag->title = $title;
+                if($tag->save())
+                {
+                    /**
+                     * Если тег сохранен записываем данные в связанную таблицу
+                     */
+                    $tag_doc->document_id = $id_document;
+                    $tag_doc->tag_id = $tag->id;
+                    $tag_doc->weight = $weight;
+
+                    if(!$tag_doc->save())
+                    {
+                        $errors[]='Error - on '.$i++.' iteration saved Documents_Tags';
+                    }
+                }
+                else
+                {
+                    $errors[] = 'Error insert tag on '.$i.' interation';
+                }
+            }
+        }
+        /**
+         * Если есть ошибки выводим их для отладки
+         */
+        if(isset($errors))
+        {
+            echo CVarDumper::dump($errors, 10, TRUE);
+            Yii::app()->end();
+        }
+        else
+        {
+            return TRUE;
+        }
+    }
+    
+    /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
@@ -680,6 +825,219 @@ class DocumentsController extends DashController
             'lect1' => $lect1
         ));
     }
+    
+    public function actionGetRegions()
+    {
+         $lect1 = NULL;
+            /**
+             * Если выбрана локация пытаемся вернуть данные в следующий выпадающий список
+             */
+            $loc1 = '<option value="">select an option</option>';
+            /**
+             * Это мы получаем регион
+             */
+            $data1 = Regions::model()->findAll(array(
+                        'condition' => 'country_id=:country_id',
+                        'params' => array(':country_id' => $_POST['uplevel_id'],),
+                        'order' => 'region ASC'
+                         )
+                    );
+            /**
+             * Формируем массив для выпадающего списка
+             */
+            $data1 = CHtml::listData($data1, 'id', 'region');
+            
+            if ($data1)
+            {
+                /**
+                 * Если запрос вернул дочерние элементы локации, 
+                 * формируем список опшинов
+                 */
+                foreach ($data1 as $value => $subcategory)
+                {
+                    $loc1 .=CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
+                }
+                /**
+                 * Ставим флаг для отображения выпадающего списка
+                 */
+                $loc2 = 1;
+            }
+            
+            /**
+             * Если дисциплина была выбрана ранее из списка,
+             * пытаемся получить лекции
+             */
+            if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
+            {
+                $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['uplevel_id']);
+                
+                $lect1 = '<option value="">select lecturer</option>';
+                /**
+                 * Формируем массив для выпадающего списка лекций
+                 */
+                $data3 = CHtml::listData($data3, 'id', 'name');
+                /**
+                 * Формируем спсок опшинов для лекций
+                 */
+                foreach ($data3 as $value => $subcategory)
+                {
+                    $lect1 .= CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
+                }
+            }
+            /**
+             * Возвращаем массив json
+             */
+            echo CJSON::encode(array(
+                'loc1' => $loc1,
+                'loc2' => $loc2,
+                'lect1' => $lect1
+            ));
+            
+    }
+    
+    public function actionGetCities()
+    {
+         $lect1 = NULL;
+         
+            /**
+             * Если выбрана локация пытаемся вернуть данные в следующий выпадающий список
+             */
+            $loc1 = '<option value="">select an option</option>';
+            /**
+             * Это мы получаем город
+             */
+            $data1 = Cities::model()->findAll(array(
+                        'condition' => 'region_id=:region_id',
+                        'params' => array(':region_id' => $_POST['uplevel_id'],),
+                        'order' => 'city ASC'
+                         )
+                    );
+            /**
+             * Формируем массив для выпадающего списка
+             */
+            $data1 = CHtml::listData($data1, 'id', 'city');
+            
+            if ($data1)
+            {
+                /**
+                 * Если запрос вернул дочерние элементы локации, 
+                 * формируем список опшинов
+                 */
+                foreach ($data1 as $value => $subcategory)
+                {
+                    $loc1 .=CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
+                }
+                /**
+                 * Ставим флаг для отображения выпадающего списка
+                 */
+                $loc2 = 1;
+            }
+            
+            /**
+             * Если дисциплина была выбрана ранее из списка,
+             * пытаемся получить лекции
+             */
+            if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
+            {
+                $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['uplevel_id']);
+                
+                $lect1 = '<option value="">select lecturer</option>';
+                /**
+                 * Формируем массив для выпадающего списка лекций
+                 */
+                $data3 = CHtml::listData($data3, 'id', 'name');
+                /**
+                 * Формируем спсок опшинов для лекций
+                 */
+                foreach ($data3 as $value => $subcategory)
+                {
+                    $lect1 .= CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
+                }
+            }
+            /**
+             * Возвращаем массив json
+             */
+            echo CJSON::encode(array(
+                'loc1' => $loc1,
+                'loc2' => $loc2,
+                'lect1' => $lect1
+            ));
+            
+    }
+    
+    public function actionGetUniversity()
+    {
+         $lect1 = NULL;
+         $loc1 = NULL;
+                /**
+                 * Если запрос ничего не вернул пытаемся получить список университетов,
+                 * Потому, что это город и по городу можно получить универы
+                 */
+                $unis = Universities::model()->findAll(array(
+                                'condition' => 'location_id=:location_id',
+                                'params' => array(':location_id' => $_POST['uplevel_id'],),
+                                'order' => 'title ASC',
+                            )
+                        );
+                
+                if($unis)
+                {
+                    /**
+                     * Если универы есть, формируем массив для выпадающего списка
+                     */
+                    $unis = CHtml::listData($unis, 'id', 'title');
+                    
+                    /**
+                     * Формируем список опшинов с универами
+                     */
+                    foreach ($unis as $value => $subcategory)
+                    {
+                        $loc1 .= CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
+                    }
+                    /**
+                     * Ставим флаг для отображения выпадающего списка
+                     */
+                    $loc2 = 1;
+                }
+                else
+                {
+                    /**
+                     * Если универов нет, ставим флаг для скрытия выпадающего списка
+                     */
+                    $loc2 = 0;
+                } 
+                
+                /**
+                 * Если дисциплина была выбрана ранее из списка,
+                 * пытаемся получить лекции
+                 */
+                if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
+                {
+                    $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['uplevel_id']);
+
+                    $lect1 = '<option value="">select lecturer</option>';
+                    /**
+                     * Формируем массив для выпадающего списка лекций
+                     */
+                    $data3 = CHtml::listData($data3, 'id', 'name');
+                    /**
+                     * Формируем спсок опшинов для лекций
+                     */
+                    foreach ($data3 as $value => $subcategory)
+                    {
+                        $lect1 .= CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
+                    }
+                }
+                
+                /**
+                * Возвращаем массив json
+                */
+               echo CJSON::encode(array(
+                   'loc1' => $loc1,
+                   'loc2' => $loc2,
+                   'lect1' => $lect1
+               ));
+    }
 
     public function actionDynamicuniver()
     {
@@ -704,32 +1062,37 @@ class DocumentsController extends DashController
         ));
     }
 
+    /**
+     * Загрузка списков аяксом при выбраном переключателе 
+     * Флаг документа - сопровождающий лекцию или нет(университетский/нет)
+     */
     public function actionDynamicuniflag()
     {
+        $lect1 = null;
+        
         $loc1 = '<option value="">select...</option>';
-        if ($_POST['uni_flag'] == "1")
+        if ($_POST['uni_flag'] == 1)
         {
-            $data1 = Locations::model()->findAll(array(
-                'condition' => 'type_id = 2',
-                'order' => 'title ASC'
+            $data1 = Countries::model()->findAll(array(
+                        'order' => 'country ASC'
                     ));
-            $data1 = CHtml::listData($data1, 'id', 'title');
+            $data1 = CHtml::listData($data1, 'id', 'country');
             foreach ($data1 as $value => $subcategory)
             {
-                $loc1 = $loc1 . CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
+                $loc1 .= CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
             }
         }
 
-        if ($_POST[discipline] != -1 && $_POST[discipline] != -2)
+        if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
         {
             $lect1 = '<option value="">select lecturer</option>';
 
-            $data2 = Lecturers::model()->searchByFlag($_POST[discipline], 0, $_POST[uni_flag]);
+            $data2 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['uni_flag']);
             $data2 = CHtml::listData($data2, 'id', 'name');
 
             foreach ($data2 as $value => $subcategory)
             {
-                $lect1 = $lect1 . CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
+                $lect1 .= CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
             }
         }
 
@@ -745,86 +1108,101 @@ class DocumentsController extends DashController
      */
     public function actionDynamiclecturer()
     {
+        $lect1 = NULL;
         /**
          * Если дисциплина определена
          */
-        if ($_POST[discipline] != -1 && $_POST[discipline] != -2)
+        if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
         {
-            /**
-             * Создаем пустой опшин выбора лекции и обзовем его lect1
-             */
-            $lect1 = '<option value="">select lecturer</option>';
-            
-            /**
-             * Если универ определен
-             */
-            if ($_POST[uni] != -1 && $_POST[uni] != -2)
+            if($_POST['uni_flag']!=-2)
             {
                 /**
-                 * тип локации записываем 10, то есть для универа
-                 */
-                $loc_type = 10;
-                
-                /**
-                 * А это id размещения - город, регион, страна
-                 */
-                $loc_id = $_POST[uni];
-            }
-            else if ($_POST[city] != -1 && $_POST[city] != -2)
-            {
-                /**
-                 * Если определен город тип локации = 4 для выборки с городом
-                 */
-                $loc_type = 4;
-                /**
-                 * иденитфиктор города
-                 */
-                $loc_id = $_POST[city];
-            }
-            else if ($_POST[country] != -1 && $_POST[country] != -2)
-            {
-                /**
-                 * Если определена страна ставим тип локации для выборки со страной
-                 */
-                $loc_type = 2;
-                /**
-                 * Идентификатор страны
-                 */
-                $loc_id = $_POST[country];
+                * Создаем пустой опшин выбора лекции и обзовем его lect1
+                */
+               $lect1 = '<option value="">select lecturer</option>';
+
+               /**
+                * Если универ определен
+                */
+               if ($_POST['uni'] != -1 && $_POST['uni'] != -2)
+               {
+                   /**
+                    * тип локации записываем 10, то есть для универа
+                    */
+                   $loc_type = 10;
+
+                   /**
+                    * А это id размещения - город, регион, страна
+                    */
+                   $loc_id = $_POST['uni'];
+               }
+               else if ($_POST['city'] != -1 && $_POST['city'] != -2)
+               {
+                   /**
+                    * Если определен город тип локации = 4 для выборки с городом
+                    */
+                   $loc_type = 4;
+                   /**
+                    * иденитфиктор города
+                    */
+                   $loc_id = $_POST['city'];
+               }
+               else if ($_POST['country'] != -1 && $_POST['country'] != -2)
+               {
+                   /**
+                    * Если определена страна ставим тип локации для выборки со страной
+                    */
+                   $loc_type = 2;
+                   /**
+                    * Идентификатор страны
+                    */
+                   $loc_id = $_POST['country'];
+               }
+               else
+               {
+                   /**
+                    * Если ничего не определено, ставил тип локации 0, для выборки с документом
+                    */
+                   $loc_type = 0;
+                   $loc_id = $_POST['uni_flag'];
+               }
+
+               //var_dump($_POST[discipline], $loc_type, $loc_id);exit;
+               /**
+                * Пробуем получить лекции. Дополнительные параметры служат 
+                * для жадной загрузки вместе с универами странами , городами , дисциплинами и документами
+                */
+               $data1 = Lecturers::model()->searchByFlag($_POST['discipline'], $loc_type, $loc_id);
+               //echo CVarDumper::dump($data1, 100, TRUE);exit;
+               /**
+                * Формируем массив для выпадающего списка
+                */
+               $data2 = CHtml::listData($data1, 'id', 'name');
+
+               /**
+                * Формируем массив опшинов
+                */
+               foreach ($data2 as $value => $subcategory)
+               {
+                   /**
+                    * Заполняем переменную lect1 тегами опшин
+                    */
+                   $lect1 .= CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
+               }
+               /**
+                * Ставим флаг для открытия выпадающего списка лекций
+                */
+               $lect2 = 1;
             }
             else
             {
                 /**
-                 * Если ничего не определено, ставил тип локации 0, для выборки с документом
-                 */
-                $loc_type = 0;
-                $loc_id = $_POST[uni_flag];
+                * если флаг не определен, то не выводим выпадающий список
+                */
+                $lect2 = 0;
             }
-            /**
-             * Пробуем получить лекции. Дополнительные параметры служат 
-             * для жадной загрузки вместе с универами странами , городами , дисциплинами и документами
-             */
-            $data1 = Lecturers::model()->searchByFlag($_POST[discipline], $loc_type, $loc_id);
-            //echo CVarDumper::dump($data1, 10, TRUE);exit;
-            /**
-             * Формируем массив для выпадающего списка
-             */
-            $data2 = CHtml::listData($data1, 'id', 'name');
             
-            /**
-             * Формируем массив опшинов
-             */
-            foreach ($data2 as $value => $subcategory)
-            {
-                /**
-                 * Заполняем переменную lect1 тегами опшин
-                 */
-                $lect1 .= CHtml::tag('option', array('value' => $value), CHtml::encode($subcategory), true);
-            }
-            /**
-             * Ставим флаг для открытия выпадающего списка лекций
-             */
-            $lect2 = 1;
+            
         }
         else
         {
@@ -839,6 +1217,8 @@ class DocumentsController extends DashController
             'lect2' => $lect2,
         ));
     }
+    
+    
     /**
      * Обработчик тыканья по выпадающему списку лекций
      * Если лекция выбрана, то поле ввода блокируем

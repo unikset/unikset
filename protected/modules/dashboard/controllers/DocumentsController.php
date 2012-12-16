@@ -776,7 +776,7 @@ class DocumentsController extends DashController
              * Если дисциплина была выбрана ранее из списка,
              * пытаемся получить лекции
              */
-            if ($_POST[discipline] != -1 && $_POST[discipline] != -2)
+            if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
             {
                 $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], $model->type_id, $_POST['uplevel_id']);
             }
@@ -792,7 +792,7 @@ class DocumentsController extends DashController
              * Если дисциплина была выбрана ранее из списка,
              * пытаемся получить лекции
              */
-            if ($_POST[discipline] != -1 && $_POST[discipline] != -2)
+            if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
             {
                 $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], $_POST['downlevel'], $_POST['downlevel_id']);
             }
@@ -1041,14 +1041,14 @@ class DocumentsController extends DashController
 
     public function actionDynamicuniver()
     {
-        if ($_POST[discipline] != -1 && $_POST[discipline] != -2)
+        if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
         {
             $lect1 = '<option value="">select lecturer</option>';
 
             if ($_POST[uni] != -1 && $_POST[uni] != -2)
-                $data2 = Lecturers::model()->searchByFlag($_POST[discipline], 10, $_POST[uni]);
+                $data2 = Lecturers::model()->searchByFlag($_POST['discipline'], 10, $_POST['uni']);
             else
-                $data2 = Lecturers::model()->searchByFlag($_POST[discipline], 4, $_POST[city]);
+                $data2 = Lecturers::model()->searchByFlag($_POST['discipline'], 4, $_POST['city']);
 
             $data2 = CHtml::listData($data2, 'id', 'name');
             foreach ($data2 as $value => $subcategory)
@@ -1225,7 +1225,7 @@ class DocumentsController extends DashController
      */
     public function actionDynamiclecturer2()
     {
-        if ($_POST[lecturer] != '')
+        if ($_POST['lecturer'] != '')
             $lect = 1;
         else
             $lect = 0;
@@ -1240,7 +1240,7 @@ class DocumentsController extends DashController
      */
     public function actionDynamiclecturer_new()
     {
-        if ($_POST[lecturer] != '')
+        if ($_POST['lecturer'] != '')
             $lect = 1;
         else
             $lect = 0;

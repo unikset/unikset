@@ -1308,7 +1308,7 @@ class DocumentsController extends Controller
      */
     public function actionDynamiclecturer2()
     {
-        if ($_POST[lecturer] != '')
+        if ($_POST['lecturer'] != '')
             $lect = 1;
         else
             $lect = 0;
@@ -1323,7 +1323,7 @@ class DocumentsController extends Controller
      */
     public function actionDynamiclecturer_new()
     {
-        if ($_POST[lecturer] != '')
+        if ($_POST['lecturer'] != '')
             $lect = 1;
         else
             $lect = 0;

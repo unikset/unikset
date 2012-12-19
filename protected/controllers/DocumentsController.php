@@ -1089,7 +1089,7 @@ class DocumentsController extends Controller
              * Если дисциплина была выбрана ранее из списка,
              * пытаемся получить лекции
              */
-            if ($_POST[discipline] != -1 && $_POST[discipline] != -2)
+            if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
             {
                 $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], $model->type_id, $_POST['uplevel_id']);
             }
@@ -1105,7 +1105,7 @@ class DocumentsController extends Controller
              * Если дисциплина была выбрана ранее из списка,
              * пытаемся получить лекции
              */
-            if ($_POST[discipline] != -1 && $_POST[discipline] != -2)
+            if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
             {
                 $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], $_POST['downlevel'], $_POST['downlevel_id']);
             }
@@ -1143,14 +1143,14 @@ class DocumentsController extends Controller
     {
          $lect1 = NULL;
          
-        if ($_POST[discipline] != -1 && $_POST[discipline] != -2)
+        if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
         {
             $lect1 = '<option value="">select lecturer</option>';
 
-            if ($_POST[uni] != -1 && $_POST[uni] != -2)
-                $data2 = Lecturers::model()->searchByFlag($_POST[discipline], 10, $_POST[uni]);
+            if ($_POST['uni'] != -1 && $_POST['uni'] != -2)
+                $data2 = Lecturers::model()->searchByFlag($_POST['discipline'], 10, $_POST['uni']);
             else
-                $data2 = Lecturers::model()->searchByFlag($_POST[discipline], 4, $_POST[city]);
+                $data2 = Lecturers::model()->searchByFlag($_POST['discipline'], 4, $_POST['city']);
 
             $data2 = CHtml::listData($data2, 'id', 'name');
             foreach ($data2 as $value => $subcategory)

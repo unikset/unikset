@@ -615,6 +615,9 @@ class DocumentsController extends DashController
          */
         $doc->unsetAttributes();  // clear any default values
         
+        //echo CVarDumper::dump($_POST, 10 ,true); exit;
+        
+        
         if (isset($_POST['Documents']))
         {
             //echo CVarDumper::dump($doc->attributes,10,TRUE);

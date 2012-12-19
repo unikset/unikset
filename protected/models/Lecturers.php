@@ -75,7 +75,7 @@ class Lecturers extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
+			'id' => 'Name lecture',
 			'name' => 'Name lecture',
 		);
 	}

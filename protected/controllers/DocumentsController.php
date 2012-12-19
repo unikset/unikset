@@ -615,49 +615,64 @@ class DocumentsController extends Controller
          */
         $doc->unsetAttributes();  // clear any default values
         
+        /**
+         * Если пользователь нажал кнопку Search
+         * Собираем параметры из массива POST
+         */
         if (isset($_POST['Documents']))
         {
-            //echo CVarDumper::dump($doc->attributes,10,TRUE);
-            //echo CVarDumper::dump($_POST, 10, TRUE);exit;
+            //echo CVarDumper::dump($_POST, 10 ,true); exit;
             /**
-             * Если данные пришли из формы методом пост 
-             * инициализируем атрибуты модели документа
+             * Получаем текстовую строку
              */
-            $doc->attributes = $_POST['Documents'];
+            $q          = Yii::app()->request->getPost('query');
+            $is_univer  = $_POST['Documents']['is_university_document']; 
+            $city       = $_POST['Cities']['id']; 
+            $region     = $_POST['Regions']['id'];
+            $country    = $_POST['Countries']['id'];
+            $university = $_POST['Universities']['id'];
+            $discipline = $_POST['Discipline']['id']; 
+            $lecturer   = $_POST['Lecturers']['id']; 
+ 
+            
+            $document = new Documents();
+            $results = $document->advancedSearch($q,  $is_univer, $city, $region, $country, $university, $discipline, $lecturer);
+
         }
         $this->render('search', array(
             'doc' => $doc,
+            'results'=>$results,
         ));
     }
     
-    public function actionTextSearch()
-    {
-        $doc = new Documents();
-        
-        
-        Yii::import('application.vendors.*');
-        require_once('Zend/Search/Lucene.php');
-        
-        setlocale(LC_CTYPE, 'ru_RU.UTF-8');
-        
-        Zend_Search_Lucene_Analysis_Analyzer::setDefault(new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8());
-
-
-        if (($term = Yii::app()->getRequest()->getParam('q', null)) !== null) 
-        {
-            $index = new Zend_Search_Lucene(Yii::getPathOfAlias('application.runtime.search'));
-            $results = $index->find($term);
-            $query = Zend_Search_Lucene_Search_QueryParser::parse($term);      
-
-
-            $this->render('search', array(
-                'doc' => $doc,
-                'results'=>$results, 
-                'term'=>$term, 
-                'query'=>$query, 
-            ));
-        }
-    }
+//    public function actionTextSearch()
+//    {
+//        $doc = new Documents();
+//        
+//        
+//        Yii::import('application.vendors.*');
+//        require_once('Zend/Search/Lucene.php');
+//        
+//        setlocale(LC_CTYPE, 'ru_RU.UTF-8');
+//        
+//        Zend_Search_Lucene_Analysis_Analyzer::setDefault(new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8());
+//
+//
+//        if (($term = Yii::app()->getRequest()->getParam('q', null)) !== null) 
+//        {
+//            $index = new Zend_Search_Lucene(Yii::getPathOfAlias('application.runtime.search'));
+//            $results = $index->find($term);
+//            $query = Zend_Search_Lucene_Search_QueryParser::parse($term);      
+//
+//
+//            $this->render('search', array(
+//                'doc' => $doc,
+//                'results'=>$results, 
+//                'term'=>$term, 
+//                'query'=>$query, 
+//            ));
+//        }
+//    }
     
     public function actionTagSearch()
     {
@@ -674,6 +689,7 @@ class DocumentsController extends Controller
             
             $criteria2 = new CDbCriteria();
             
+            $id_array = array();
             foreach ($results as $result)
             {
                 foreach ($result->documentTags as $dt)
@@ -766,7 +782,7 @@ class DocumentsController extends Controller
              */
             $data1 = Regions::model()->findAll(array(
                         'condition' => 'country_id=:country_id',
-                        'params' => array(':country_id' => $_POST['uplevel_id'],),
+                        'params' => array(':country_id' => $_POST['country_id'],),
                         'order' => 'region ASC'
                          )
                     );
@@ -836,7 +852,7 @@ class DocumentsController extends Controller
              */
             $data1 = Cities::model()->findAll(array(
                         'condition' => 'region_id=:region_id',
-                        'params' => array(':region_id' => $_POST['uplevel_id'],),
+                        'params' => array(':region_id' => $_POST['region_id'],),
                         'order' => 'city ASC'
                          )
                     );
@@ -903,7 +919,7 @@ class DocumentsController extends Controller
                  */
                 $unis = Universities::model()->findAll(array(
                                 'condition' => 'location_id=:location_id',
-                                'params' => array(':location_id' => $_POST['uplevel_id'],),
+                                'params' => array(':location_id' => $_POST['city_id'],),
                                 'order' => 'title ASC',
                             )
                         );

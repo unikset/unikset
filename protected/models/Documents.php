@@ -226,6 +226,141 @@ class Documents extends CActiveRecord
 		));
 	}
         
+        /**
+         * Расширенный поиск документа
+         * @param string $q
+         * @param string $is_univer
+         * @param string $city
+         * @param string $region
+         * @param string $country
+         * @param string $university
+         * @param string $discipline
+         * @param string $lecturer
+         */
+        public function advancedSearch($q='', $is_univer='', $city='', $region='', $country='', $university='', $discipline='', $lecturer='')
+        {
+            /**
+             * Инициализируем массив фильтров
+             */
+            $criteria = new CDbCriteria();
+            
+            /**
+             * Если есть текстовая строка для поиска
+             */
+            if($q)
+            {
+                
+                //разбиваем на массив слов
+                $query_array = explode(' ', $q);
+                //echo CVarDumper::dump($query_array, 10 ,true); exit;
+                
+                $tags_criteria = new CDbCriteria();
+                $tags_criteria->with = 'documentTags';
+                $tags_criteria->order = 'documentTags.weight';
+
+                
+                foreach ($query_array as $term)
+                {
+                    $tags_criteria->compare('title', $term, FALSE, 'OR');
+                }
+                /**
+                 * Получаем массив ID тегов
+                 */
+                $results = Tags::model()->findAll($tags_criteria);
+
+                /**
+                 * Условия отбора документа по тегам
+                 */
+
+                $id_array = array();
+                
+                foreach ($results as $result)
+                {
+                    foreach ($result->documentTags as $dt)
+                    {
+                        $id_array[]=$dt->document_id;
+                    }
+                }
+                if(!empty($id_array))
+                {
+                    /**
+                    * Параметры фильтрации для текстовой строки
+                    */ 
+                    $criteria->addInCondition('t.id', $id_array);
+                    
+                    
+                    
+                }
+            }
+            
+            if($is_univer)
+            {
+                $criteria->with=array('university');
+            }
+            
+            if($city)
+            {
+                $criteria->with=array('cities'=>array(
+                            'select'=>'',
+                            'condition'=>'cities.id=:city',
+                            'params'=>array(':city'=>$city),
+                            'together'=>true,
+                    ));
+            }
+            
+            if($region)
+            {
+                $criteria->with=array('cities'=>array(
+                            'select'=>'',
+                            'condition'=>'cities.region_id=:region',
+                            'params'=>array(':region'=>$region),
+                            'together'=>true,
+                    ));
+            }
+            
+            if($country)
+            {
+                $criteria->with=array('cities'=>array(
+                            'select'=>'',
+                            'condition'=>'cities.country_id=:country',
+                            'params'=>array(':country'=>$country),
+                            'together'=>true,
+                    ));
+            }
+            
+            if($university)
+            {
+                $criteria->with=array('university'=>array(
+                            'select'=>'',
+                            'condition'=>'university.id=:university',
+                            'params'=>array(':university'=>$university),
+                            'together'=>true,
+                    ));
+            }
+            
+            if($discipline)
+            {
+                $criteria->with=array('discipline'=>array(
+                            'select'=>'',
+                            'condition'=>'discipline.id=:dis',
+                            'params'=>array(':dis'=>$discipline),
+                            'together'=>true,
+                    ));
+            }
+            
+            if($lecturer)
+            {
+                $criteria->with=array('lecturer'=>array(
+                            'select'=>'',
+                            'condition'=>'lecturer.id=:lec',
+                            'params'=>array(':lec'=>$lecturer),
+                            'together'=>true,
+                    ));
+            }
+            
+            return new CActiveDataProvider($this, array('criteria'=>$criteria,));
+        }
+
         public function searchAdmin()
         {
             // Warning: Please modify the following code to remove attributes that

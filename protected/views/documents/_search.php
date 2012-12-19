@@ -17,9 +17,9 @@
     }
 </script>    
 <div class="wide form">
-     <?php $this->widget('SearchWidget');?>
+     <?php //$this->widget('SearchWidget');?>
     
-    <?php $this->widget('SearchTagWidget');?>
+    
     
     <?php
     $form = $this->beginWidget('CActiveForm', array(
@@ -29,7 +29,8 @@
     ?>
     <?php //текстовое поле для полнотекстового поиска?>
     <div class="row">
-       
+       <!-- Виджет текстового поля поиска -->
+        <?php $this->widget('SearchTagWidget');?>
         <?php //echo $form->label($doc, 'link'); ?>
         <?php //echo $form->textField($doc, 'link'); ?>
     </div>
@@ -42,20 +43,22 @@
             echo $form->dropDownList($doc, 'is_university_document', array(''=>'- is university -', 0 => 'keine', 1 => 'eine'), array('ajax' => array(
                     'type' => 'POST',
                     'url' => CController::createUrl('dynamicuniflag'),
-                    'data' => array('uni_flag' => 'js:$(this).val()',
-                    'discipline' => 'js:exist_id("Discipline_id")',),
+                    'data' => array('uni_flag' => 'js:$(this).val()',//флаг 1-универс-кий 0 - нет
+                    'discipline' => 'js:exist_id("Discipline_id")',),//добавляем в пост массив дисциплину
                     'dataType' => 'json',
                     'success' => "function(data){
                                                    if (data.loc2 == 1) $('#loc_2').show();
                                                    else $('#loc_2').hide();
                                                    
-                                                   $('#Locations_4_id').html('<option value= >select city</option>');
                                                    $('#Universities_id').html('<option value= >select university</option>');
                                                    $('#loc_4').hide();
                                                    $('#univer').hide();
                                                    
-                                                   $('#Countries_2_id').html(data.loc1); 
-                                                   $('#Lecturers_id').html(data.lect1);
+                                                   $('#Countries_id').html(data.loc1); 
+                                                   if(data.lect1!=null)
+                                                   {
+                                                        $('#Lecturers_id').html(data.lect1);
+                                                   }  
                                                 }")
             ));
             ?>
@@ -67,14 +70,16 @@
             echo $form->label($country, 'country');
             ?>
             <?php
-            echo $form->dropDownList($country, '[2]id', array(), array('prompt' => '- select country -',
+            echo $form->dropDownList($country, 'id', array(), array('prompt' => '- select country -',
                 'ajax' => array(
                     'type' => 'POST',
                     'url' => CController::createUrl('getRegions'),
-                    'data' => array('uplevel_id' => 'js:exist_id("Countries_2_id")',
+                    'data' => array(
+                        'country_id' => 'js:exist_id("Countries_id")',
                         'downlevel' => '0',
-                        'downlevel_id' => 'js:exist_id("Documents_is_university_document")',
-                        'discipline' => 'js:exist_id("Discipline_id")',),
+                        'is_univer' => 'js:exist_id("Documents_is_university_document")',
+                        'discipline' => 'js:exist_id("Discipline_id")',
+                        ),
                     'dataType' => 'json',
                     'success' => "function(data){
                            if (data.loc2 == 1) $('#loc_3').show();
@@ -83,7 +88,7 @@
                            $('#Universities_id').html('<option value= >select university</option>');
                            $('#univer').hide();
 
-                           $('#Regions_3_id').html(data.loc1); 
+                           $('#Regions_id').html(data.loc1); 
                            $('#Lecturers_id').html(data.lect1);
                         }"
                 )
@@ -97,14 +102,16 @@
             echo $form->label($region, 'region');
             ?>
             <?php
-            echo $form->dropDownList($region, '[3]id', array(), array('prompt' => '- select region -',
+            echo $form->dropDownList($region, 'id', array(), array('prompt' => '- select region -',
                 'ajax' => array(
                     'type' => 'POST',
                     'url' => CController::createUrl('getCities'),
-                    'data' => array('uplevel_id' => 'js:exist_id("Regions_3_id")',
-                    'downlevel' => '1',
-                    'downlevel_id' => 'js:exist_id("Countries_2_id")',
-                    'discipline' => 'js:exist_id("Discipline_id")',),
+                    'data' => array(
+                        'region_id' => 'js:exist_id("Regions_id")',
+                        'downlevel' => '1',//TODO Зачем это разобраться
+                        'country_id' => 'js:exist_id("Countries_id")',
+                        'discipline' => 'js:exist_id("Discipline_id")',
+                        ),
                     'dataType' => 'json',
                     'success' => "function(data){
                                if (data.loc2 == 1) $('#loc_4').show();
@@ -113,7 +120,7 @@
                                $('#Universities_id').html('<option value= >select university</option>');
                                $('#univer').hide();
 
-                               $('#Cities_4_id').html(data.loc1); 
+                               $('#Cities_id').html(data.loc1); 
                                $('#Lecturers_id').html(data.lect1);
                             }"
                 )
@@ -127,14 +134,16 @@
             echo $form->label($city, 'city');
             ?>
             <?php
-            echo $form->dropDownList($city, '[4]id', array(), array('prompt' => '- select city -',
+            echo $form->dropDownList($city, 'id', array(), array('prompt' => '- select city -',
                 'ajax' => array(
                     'type' => 'POST',
                     'url' => CController::createUrl('getUniversity'),
-                    'data' => array('uplevel_id' => 'js:exist_id("Cities_4_id")',
-                        'downlevel' => '2',
-                        'downlevel_id' => 'js:exist_id("Locations_2_id")',
-                        'discipline' => 'js:exist_id("Discipline_id")',),
+                    'data' => array(
+                        'city_id' => 'js:exist_id("Cities_id")',
+                        'downlevel' => '2',//TODO Зачем это разобраться
+                        'downlevel_id' => 'js:exist_id("Locations_2_id")',//Этого уже нет
+                        'discipline' => 'js:exist_id("Discipline_id")',
+                        ),
                     'dataType' => 'json',
                     'success' => "function(data){
                                    if (data.loc2 == 1) $('#univer').show();
@@ -158,9 +167,11 @@
                 'ajax' => array(
                     'type' => 'POST',
                     'url' => CController::createUrl('dynamicuniver'),
-                    'data' => array('uni' => 'js:exist_id("Universities_id")',
-                    'city' => 'js:exist_id("Cities_4_id")',
-                    'discipline' => 'js:exist_id("Discipline_id")',),
+                    'data' => array(
+                        'uni' => 'js:exist_id("Universities_id")',
+                        'city' => 'js:exist_id("Cities_id")',
+                        'discipline' => 'js:exist_id("Discipline_id")',
+                        ),
                     'dataType' => 'json',
                     'success' => "function(data){
                                    $('#Lecturers_id').html(data.lect1);
@@ -185,11 +196,14 @@
                 'ajax' => array(
                     'type' => 'POST',
                     'url' => CController::createUrl('dynamiclecturer'),
-                    'data' => array('discipline' => 'js:exist_id("Discipline_id")',
-                    'uni' => 'js:exist_id("Universities_id")',
-                    'city' => 'js:exist_id("Cities_4_id")',
-                    'country' => 'js:exist_id("Countries_2_id")',
-                    'uni_flag' => 'js:exist_id("Documents_is_university_document")',),
+                    'data' => array(
+                        'discipline' => 'js:exist_id("Discipline_id")',
+                        'uni' => 'js:exist_id("Universities_id")',
+                        'city' => 'js:exist_id("Cities_id")',
+                        'region' => 'js:exist_id("Regions_id")',
+                        'country' => 'js:exist_id("Countries_id")',
+                        'uni_flag' => 'js:exist_id("Documents_is_university_document")',
+                        ),
                     'dataType' => 'json',
                     'success' => "function(data){
                                if (data.lect2 == 1) { $('#lecturer').show();}
@@ -203,7 +217,7 @@
         <?php //Выбор лекции ?>
         <div class="row" id="lecturer" style="display:none">
             <?php $lect = new Lecturers();?>
-            <?php echo $form->label($lect, 'name');?>
+            <?php echo $form->label($lect, 'id');?>
             <?php echo $form->dropDownList($lect, 'id', array(), array('empty' => '- select lecture -',));?>
         </div>
 

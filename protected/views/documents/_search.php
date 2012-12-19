@@ -58,7 +58,11 @@
                                                    if(data.lect1!=null)
                                                    {
                                                         $('#Lecturers_id').html(data.lect1);
-                                                   }  
+                                                   }
+                                                   else
+                                                   {
+                                                        $('#Lecturers_id').html('<option>select lecturers</option>');
+                                                   }
                                                 }")
             ));
             ?>

@@ -615,6 +615,7 @@ class DocumentsController extends Controller
          */
         $doc->unsetAttributes();  // clear any default values
         
+        $results = NULL;
         /**
          * Если пользователь нажал кнопку Search
          * Собираем параметры из массива POST

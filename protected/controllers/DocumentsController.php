@@ -1,5 +1,5 @@
 <?php
-// Теперь здесь будет копаться еще и Максимка!!!
+
 class DocumentsController extends Controller
 {
 

@@ -755,6 +755,18 @@ class DocumentsController extends Controller
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
     }
+    
+    public function actionCallLocationFilterForm()
+    {
+        $countries = new Countries('_docfilter');
+        $countries->unsetAttributes();  // clear any default values
+        if (isset($_GET['countries']))
+            $countries->attributes = $_GET['countries'];
+        $countries->findAll();
+        $this->renderPartial('_docfilter', array(
+            'countries' => $countries,
+        ));
+    }
 
     /*     * ****************************************************AJAX METHODS******************************************************* */
 

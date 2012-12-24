@@ -755,6 +755,18 @@ class DocumentsController extends Controller
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
     }
+    
+    public function actionCallLocationFilterForm()
+    {
+        $countries = new Countries('_docfilter');
+        $countries->unsetAttributes();  // clear any default values
+        if (isset($_GET['countries']))
+            $countries->attributes = $_GET['countries'];
+        $countries->findAll();
+        $this->renderPartial('_docfilter', array(
+            'countries' => $countries,
+        ));
+    }
 
     /*     * ****************************************************AJAX METHODS******************************************************* */
 
@@ -814,7 +826,7 @@ class DocumentsController extends Controller
              */
             if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
             {
-                $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['country_id']);
+                $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['uplevel_id']);
                 
                 $lect1 = '<option value="">select lecturer</option>';
                 /**
@@ -884,7 +896,7 @@ class DocumentsController extends Controller
              */
             if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
             {
-                $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['region_id']);
+                $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['uplevel_id']);
                 
                 $lect1 = '<option value="">select lecturer</option>';
                 /**
@@ -958,7 +970,7 @@ class DocumentsController extends Controller
                  */
                 if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
                 {
-                    $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['city_id']);
+                    $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['uplevel_id']);
 
                     $lect1 = '<option value="">select lecturer</option>';
                     /**
@@ -1150,7 +1162,7 @@ class DocumentsController extends Controller
             if ($_POST['uni'] != -1 && $_POST['uni'] != -2)
                 $data2 = Lecturers::model()->searchByFlag($_POST['discipline'], 10, $_POST['uni']);
             else
-                $data2 = Lecturers::model()->searchByFlag($_POST['discipline'], 4, $_POST['city_id']);
+                $data2 = Lecturers::model()->searchByFlag($_POST['discipline'], 4, $_POST['city']);
 
             $data2 = CHtml::listData($data2, 'id', 'name');
             foreach ($data2 as $value => $subcategory)
@@ -1238,7 +1250,7 @@ class DocumentsController extends Controller
                     */
                    $loc_id = $_POST['uni'];
                }
-               else if ($_POST['city_id'] != -1 && $_POST['city_id'] != -2)
+               else if ($_POST['city'] != -1 && $_POST['city'] != -2)
                {
                    /**
                     * Если определен город тип локации = 4 для выборки с городом

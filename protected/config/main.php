@@ -34,6 +34,10 @@ return array(
 
 	// application components
 	'components'=>array(
+                'request'=>array(
+                    'enableCookieValidation'=>true,
+                    'enableCsrfValidation'=>true,
+                ),
 		'user'=>array(
                         //override class CWebUser
                         'class'=>'WebUser',
@@ -49,12 +53,19 @@ return array(
 
 		// uncomment the following to enable URLs in path-format
 		'urlManager'=>array(
+                        'class'=>'application.components.UrlManager',
+                        //'languages'=>array('en','ru','uk'),
+                        //'langParam'=>'lang',
 			'urlFormat'=>'path',
                         'showScriptName' => false,
 			'rules'=>array(
-				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
-				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
-				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+                                '<language:\w{2}>/<controller:\w+>/<id:\d+>'=>'<controller>/view',
+                                '<language:\w{2}>/<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+                                '<language:\w{2}>/<controller:\w+>/<action:\w+>/*'=>'<controller>/<action>',
+
+//				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
+//				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+//				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
 		
@@ -118,5 +129,6 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
+                'languages'=>require(dirname(__FILE__).'/languages.php'),
 	),
 );

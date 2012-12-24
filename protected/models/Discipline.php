@@ -65,7 +65,7 @@ class Discipline extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'title' => 'Disciplines',
+			'title' => Yii::t('app','Discipline'),
 		);
 	}
 

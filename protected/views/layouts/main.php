@@ -28,14 +28,14 @@
 	<div id="mainmenu">
 		<?php $this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
-				array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-				array('label'=>'Contact', 'url'=>array('/site/contact')),
-                                array('label'=>'Search', 'url'=>array('/documents/search')),
-                                array('label'=>'Create', 'url'=>array('/documents/create')),
-				array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
-                                array('label'=>'Registration', 'url'=>array('/user/registration'), 'visible'=>Yii::app()->user->isGuest),
-				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/user/logout'), 'visible'=>!Yii::app()->user->isGuest)
+				array('label'=>Yii::t('app','Home'), 'url'=>array('/site/index')),
+				array('label'=>Yii::t('app','About'), 'url'=>array('/site/page', 'view'=>'about')),
+				array('label'=>Yii::t('app','Contact'), 'url'=>array('/site/contact')),
+                                array('label'=>Yii::t('app','Search'), 'url'=>array('/documents/search')),
+                                array('label'=>Yii::t('app','Create'), 'url'=>array('/documents/create')),
+				array('label'=>Yii::t('app','Login'), 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
+                                array('label'=>Yii::t('app','Registration'), 'url'=>array('/user/registration'), 'visible'=>Yii::app()->user->isGuest),
+				array('label'=>Yii::t('app','Logout ('.Yii::app()->user->name.')'), 'url'=>array('/user/logout'), 'visible'=>!Yii::app()->user->isGuest)
 			),
 		)); ?>
 	</div><!-- mainmenu -->

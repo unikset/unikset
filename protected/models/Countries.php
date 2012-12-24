@@ -67,7 +67,7 @@ class Countries extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'country' => 'Country',
+			'country' => Yii::t('app','Country'),
 		);
 	}
 

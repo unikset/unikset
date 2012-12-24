@@ -70,9 +70,9 @@ class Comments extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'comment' => 'Comment',
-			'insert_date' => 'Insert Date',
-			'author_ip' => 'Author Ip',
+			'comment' => Yii::t('app','Comment'),
+			'insert_date' => Yii::t('app','Insert Date'),
+			'author_ip' => Yii::t('app','Author Ip'),
 		);
 	}
 

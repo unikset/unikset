@@ -72,9 +72,9 @@ class Cities extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'city' => 'City',
-			'country_id' => 'Country',
-			'region_id' => 'Region',
+			'city' => Yii::t('app','City'),
+			'country_id' => Yii::t('app','Country'),
+			'region_id' => Yii::t('app','Region'),
 		);
 	}
 

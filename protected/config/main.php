@@ -68,8 +68,8 @@ return array(
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=unikset',
 			'emulatePrepare' => true,
-			'username' => 'mysql',
-			'password' => 'mysql',
+			'username' => 'unikset',
+			'password' => '9JpfQZ51',
 			'charset' => 'utf8',
                         // включаем профайлер
                         'enableProfiling'=>true,

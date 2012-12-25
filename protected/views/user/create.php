@@ -10,6 +10,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Registration User</h1>
+<div class="pagetitle"><h1>Registration User</h1></div>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

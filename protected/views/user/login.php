@@ -6,6 +6,7 @@ $this->breadcrumbs=array(
 ?>
 
 <div class="pagetitle"><h1>Login</h1></div>
+<div class="page-container">
 
 <p>Please fill out the following form with your login credentials:</p>
 
@@ -47,3 +48,4 @@ $this->breadcrumbs=array(
 
 <?php $this->endWidget(); ?>
 </div><!-- form -->
+</div>

@@ -11,5 +11,7 @@ $this->breadcrumbs=array(
 ?>
 
 <div class="pagetitle"><h1>Create Documents</h1></div>
+<div class="page-container">
 
 <?php echo $this->renderPartial('_create', array('model'=>$model)); ?>
+</div>

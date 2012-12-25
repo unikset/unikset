@@ -5,7 +5,7 @@ $this->breadcrumbs=array(
 ?>
 
 <div class="pagetitle"><h1>Documents</h1><div class="filter-menu"><a href="#">select country and university ▼</a><a href="#">select discipline and lecture ▼</a></div></div>
-
+<div class="page-container">
 <!--<?php //Форма поиска документа ?>
 <div class="search-form">
     <?php echo $this->renderPartial('_search',array('doc'=>$doc,));?>
@@ -89,3 +89,5 @@ else
 
 
 ?>
+
+</div>

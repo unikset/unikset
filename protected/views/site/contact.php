@@ -6,6 +6,8 @@ $this->breadcrumbs=array(
 ?>
 
 <div class="pagetitle"><h1>Contact Us</h1></div>
+<div class="page-container">
+
 
 <?php if(Yii::app()->user->hasFlash('contact')): ?>
 
@@ -79,3 +81,4 @@ If you have business inquiries or other questions, please fill out the following
 </div><!-- form -->
 
 <?php endif; ?>
+</div>

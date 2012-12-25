@@ -1,6 +1,7 @@
 <?php $this->pageTitle=Yii::app()->name; ?>
 
 <div class="pagetitle"><h1>Welcome to <?php echo CHtml::encode(Yii::app()->name); ?></h1></div>
+<div class="page-container">
 
 <p>Congratulations! You have successfully created your Yii application.</p>
 
@@ -14,3 +15,4 @@
 the <a href="http://www.yiiframework.com/doc/">documentation</a>.
 Feel free to ask in the <a href="http://www.yiiframework.com/forum/">forum</a>,
 should you have any questions.</p>
+</div>

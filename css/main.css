@@ -16,6 +16,9 @@ body {
 	margin:0;
 	padding:0;
 }
+a img {
+	border:0;
+}
 .pagetitle {
 	z-index:0;
 	width:100%;
@@ -23,6 +26,11 @@ body {
 	float:left;
 	margin-top:-9px;
 	background:#ff7800;
+	margin-bottom:10px;
+}
+.page-container {
+	clear:both;
+	width:100%;
 }
 #header {
 	width:100%;

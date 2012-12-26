@@ -14,11 +14,7 @@ $this->breadcrumbs=array(
 </div>
 <div class="page-container">
 <?php //Форма поиска документа ?>
-<!--
-<div class="search-form">
-    <?php echo $this->renderPartial('_search',array('doc'=>$doc,));?>
-</div>
--->
+<!--<div class="search-form"><?php echo $this->renderPartial('_search',array('doc'=>$doc,));?></div>-->
 <?php
 if (isset($_POST['Countries']) && $_POST['Countries']['id']) 
 {

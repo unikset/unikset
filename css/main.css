@@ -87,3 +87,25 @@ a img {
 	color:white;
 	margin-left:10px;
 }
+#document-filter {
+	width:100%;
+	clear:both;
+	position:absolute;
+	top:90px;
+	display:none;
+}
+#document-filter-angle {
+	position:relative;
+	width:100%;
+	height: 11px;
+}
+#document-filter-angle img {
+	display:block;
+	float:left;
+}
+#document-filter-wrapper {
+	position:relative;
+	width:100%;
+	height:450px;
+	background:url(../images/filter-back.png) repeat;
+}

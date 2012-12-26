@@ -1783,3 +1783,30 @@ Stack trace:
 REQUEST_URI=/unikset/site/contact
 HTTP_REFERER=http://localhost/unikset/site/page?view=about
 ---
+2012/12/26 15:35:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "filter.js".' in C:\xampp\htdocs\unikset\YiiFramework\framework\web\CWebApplication.php:280
+Stack trace:
+#0 C:\xampp\htdocs\unikset\YiiFramework\framework\web\CWebApplication.php(135): CWebApplication->runController('filter.js')
+#1 C:\xampp\htdocs\unikset\YiiFramework\framework\base\CApplication.php(162): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\unikset\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/unikset/filter.js
+HTTP_REFERER=http://localhost/unikset/documents/search
+---
+2012/12/26 15:36:02 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "filter.js".' in C:\xampp\htdocs\unikset\YiiFramework\framework\web\CWebApplication.php:280
+Stack trace:
+#0 C:\xampp\htdocs\unikset\YiiFramework\framework\web\CWebApplication.php(135): CWebApplication->runController('filter.js')
+#1 C:\xampp\htdocs\unikset\YiiFramework\framework\base\CApplication.php(162): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\unikset\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/unikset/filter.js
+HTTP_REFERER=http://localhost/unikset/documents/search
+---
+2012/12/26 15:52:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "images/angle.png".' in C:\xampp\htdocs\unikset\YiiFramework\framework\web\CWebApplication.php:280
+Stack trace:
+#0 C:\xampp\htdocs\unikset\YiiFramework\framework\web\CWebApplication.php(135): CWebApplication->runController('images/angle.pn...')
+#1 C:\xampp\htdocs\unikset\YiiFramework\framework\base\CApplication.php(162): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\unikset\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/unikset/images/angle.png
+HTTP_REFERER=http://localhost/unikset/documents/search
+---

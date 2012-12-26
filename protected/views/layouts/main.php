@@ -9,10 +9,14 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
 	<!--[if lt IE 8]>
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie.css" media="screen, projection" />
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap/jquery-ui-1.8.16.ie.css" />
 	<![endif]-->
 
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap/jquery-ui-1.8.16.custom.css" />
+
+	<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/main.js"></script>
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
@@ -22,29 +26,29 @@
 <div class="container" id="page">
 
 	<div id="header">
-		<div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
-	</div><!-- header -->
-
-	<div id="mainmenu">
-		<?php $this->widget('zii.widgets.CMenu',array(
-			'items'=>array(
-				array('label'=>Yii::t('app','Home'), 'url'=>array('/site/index')),
-				array('label'=>Yii::t('app','About'), 'url'=>array('/site/page', 'view'=>'about')),
-				array('label'=>Yii::t('app','Contact'), 'url'=>array('/site/contact')),
-                                array('label'=>Yii::t('app','Search'), 'url'=>array('/documents/search')),
-                                array('label'=>Yii::t('app','Create'), 'url'=>array('/documents/create')),
-				array('label'=>Yii::t('app','Login'), 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
-                                array('label'=>Yii::t('app','Registration'), 'url'=>array('/user/registration'), 'visible'=>Yii::app()->user->isGuest),
-				array('label'=>Yii::t('app','Logout ('.Yii::app()->user->name.')'), 'url'=>array('/user/logout'), 'visible'=>!Yii::app()->user->isGuest)
-			),
-		)); ?>
-	</div><!-- mainmenu -->
+		<div id="logo"><a href="<?php echo Yii::app()->request->baseUrl; ?>"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.jpg" alt="Unikset"/></a></div>
+		<div id="mainmenu">
+			<?php $this->widget('zii.widgets.CMenu',array(
+				'items'=>array(
+					array('label'=>'Home', 'url'=>array('/site/index')),
+					array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
+					array('label'=>'Contact', 'url'=>array('/site/contact')),
+	                array('label'=>'Search', 'url'=>array('/documents/search')),
+	                array('label'=>'Create', 'url'=>array('/documents/create')),
+					array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
+	                array('label'=>'Registration', 'url'=>array('/user/registration'), 'visible'=>Yii::app()->user->isGuest),
+					array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/user/logout'), 'visible'=>!Yii::app()->user->isGuest)
+				),
+			)); ?>
+		</div>
+	</div>
+	<!--
 	<?php if(isset($this->breadcrumbs)):?>
 		<?php $this->widget('zii.widgets.CBreadcrumbs', array(
 			'links'=>$this->breadcrumbs,
-		)); ?><!-- breadcrumbs -->
+		)); ?>
 	<?php endif?>
-        
+	-->
         <?php if(Yii::app()->user->hasFlash('message')):?>
                 <div class="message"><?php echo Yii::app()->user->getFlash('message');?></div>
         <?php endif;?>
@@ -54,9 +58,6 @@
 	<div class="clear"></div>
 
 	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
 	</div><!-- footer -->
 
 </div><!-- page -->

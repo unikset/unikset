@@ -605,6 +605,11 @@ class DocumentsController extends Controller
      */
     public function actionSearch()
     {
+    	/*
+    	* Подключаем filter.js
+    	*/
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl. '/js/jquery-ui-1.8.16.custom.min.js', CClientScript::POS_HEAD);  
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl. '/js/filter.js', CClientScript::POS_HEAD);  
         /**
          * Создаем объект поиска документа
          */

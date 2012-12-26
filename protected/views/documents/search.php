@@ -4,13 +4,21 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<h1>Documents</h1>
-
+<div class="pagetitle"><h1>Documents</h1><div class="filter-menu"><a id="filter-link-1" href="javascript:toggleCountryFilter()">select country and university ▼</a><a id="filter-link-2" href="javascript:toggleLectureFilter()">select discipline and lecture ▼</a></div></div>
+<div id="document-filter">
+	<div id="document-filter-angle">
+		<img src="<?php echo Yii::app()->request->baseUrl ?>/images/angle-top.png"/>
+	</div>
+	<div id="document-filter-wrapper">
+	</div>
+</div>
+<div class="page-container">
 <?php //Форма поиска документа ?>
+<!--
 <div class="search-form">
     <?php echo $this->renderPartial('_search',array('doc'=>$doc,));?>
 </div>
-
+-->
 <?php
 if (isset($_POST['Countries']) && $_POST['Countries']['id']) 
 {
@@ -89,3 +97,5 @@ else
 
 
 ?>
+
+</div>

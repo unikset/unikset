@@ -9,9 +9,12 @@ $this->menu=array(
 );
 ?>
 
-<h1>Users</h1>
+<div class="pagetitle"><h1>Users</h1></div>
+<div class="page-container">
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
 )); ?>
+
+</div>

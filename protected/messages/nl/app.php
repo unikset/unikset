@@ -1,0 +1,43 @@
+<?php
+/**
+ * Russian language file
+ */
+return array(
+    'Home'=>'Главная',
+    'About'=>'О проекте',
+    'Contact'=>'Контакты',
+    'Login'=>'Войти',
+    'Registration'=>'Зарегистрироваться',
+    'Logout ('.Yii::app()->user->name.')'=>'Выйти ('.Yii::app()->user->name.')',
+    'Fields with <span class="required">*</span> are required.'=>'Поля отмеченные <span class="required">*</span> обязательны для заполнения',
+    'City'=>'Город',
+    'Country'=>'Страна',
+    'Region'=>'Регион',
+    'Comment'=>'Комментарий',
+    'Comments'=>'Комментарии',
+    'List Comments'=>'Список комментариев',
+    'Create Comments'=>'Добавить комментарий',
+    'Update Comments'=>'Изменить комментарий',
+    'Delete Comments'=>'Удалить комментарий',
+    'Manage Comments'=>'Управление комментариями',
+    'View Comments'=>'Показан комментарий',
+    'View Comment'=>'Просмотр комментария',
+    'Update'=>'Изменить',
+    'Create'=>'Создать',
+    'Save'=>'Сохранить',
+    'Verification Code'=>'Проверочный код',
+    'Insert Date'=>'Дата размещения',
+    'Author Ip'=>'IP автора',
+    'You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b> or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.'=>'Вы можете использовать операторы сравнения (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b> или <b>=</b>) для уточнения результатов поиска.',
+    'Advanced Search'=>'Расширенный поиск',
+    'Search'=>'Поиск',
+    'Discipline'=>'Дисциплина',
+    'Disciplines'=>'Дисциплины',
+    'List Discipline'=>'Список дисциплин',
+    'Create Discipline'=>'Создать дисциплину',
+    'Update Discipline'=>'изменить дисциплину',
+    'Delete Discipline'=>'Удалить дисциплину',
+    'Manage Discipline'=>'Управление дисциплинами',
+    'View Discipline'=>'Просмотр дисциплины',
+    );
+?>

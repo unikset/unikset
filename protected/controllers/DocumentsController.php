@@ -438,7 +438,7 @@ class DocumentsController extends Controller
         /**
          * Получаем контент(в linux заменить на соответствующий код)
          */
-        $content = shell_exec('C:\\xpdf\\bin\\pdftotext '.$filename.' -');
+        $content = shell_exec('pdftotext '.$filename.' -');
 	/**
          * Преобразуем кодировку
          */

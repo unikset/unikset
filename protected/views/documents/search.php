@@ -4,7 +4,7 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<div class="pagetitle"><h1>Documents1</h1><div class="filter-menu"><a id="filter-link-1" href="javascript:toggleCountryFilter()">select country and university ▼</a><a id="filter-link-2" href="javascript:toggleLectureFilter()">select discipline and lecture ▼</a></div></div>
+<div class="pagetitle"><h1>Documents</h1><div class="filter-menu"><a id="filter-link-1" href="javascript:toggleCountryFilter()">select country and university ▼</a><a id="filter-link-2" href="javascript:toggleLectureFilter()">select discipline and lecture ▼</a></div></div>
 <div id="document-filter">
 	<div id="document-filter-angle">
 		<img src="<?php echo Yii::app()->request->baseUrl ?>/images/angle-top.png"/>

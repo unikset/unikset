@@ -1,6 +1,6 @@
 <?php
 // change the following paths if necessary
-$yii=dirname(__FILE__).'/YiiFramework/framework/yii.php';
+$yii=dirname(__FILE__).'/../YiiFramework/framework/yii.php';
 if($_SERVER['SERVER_ADDR']==='127.0.0.1')
 {
     $config=dirname(__FILE__).'/protected/config/main_loc.php';

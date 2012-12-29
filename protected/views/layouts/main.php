@@ -24,7 +24,7 @@
 <body>
     
 <div class="container" id="page">
-<?php echo '<h1>TEST shell2</h1>';?>
+<?php echo '<h1>TEST shell3</h1>';?>
 	<div id="header">
 		<div id="logo"><a href="<?php echo Yii::app()->request->baseUrl; ?>"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.jpg" alt="Unikset"/></a></div>
 		<div id="mainmenu">

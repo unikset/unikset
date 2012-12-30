@@ -13,6 +13,16 @@ $this->breadcrumbs=array(
 	</div>
 </div>
 <div class="page-container">
+<?php 
+	Yii::import('application.api.*');
+	$str = new Stringi('en');
+	foreach($str->alphaGroup(Countries::model()->findAll(),'country') as $key => $val) {
+		echo "<b>{$key}</b><br>";
+		foreach($val as $country) {
+			echo "{$country->id} - {$country->country}<br>";
+		}
+	}
+?>
 <?php //Форма поиска документа ?>
 <!--<div class="search-form"><?php echo $this->renderPartial('_search',array('doc'=>$doc,));?></div>-->
 <?php

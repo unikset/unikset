@@ -228,14 +228,14 @@ class Documents extends CActiveRecord
         
         /**
          * Расширенный поиск документа
-         * @param string $q
-         * @param string $is_univer
-         * @param string $city
-         * @param string $region
-         * @param string $country
-         * @param string $university
-         * @param string $discipline
-         * @param string $lecturer
+         * @param string $q - текстовая строка поиска
+         * @param string $is_univer - флаг университеский/нет
+         * @param string $city - id города
+         * @param string $region - id региона
+         * @param string $country - id страны
+         * @param string $university - id университета
+         * @param string $discipline - id дисциплины
+         * @param string $lecturer id лекции
          */
         public function advancedSearch($q='', $is_univer='', $city='', $region='', $country='', $university='', $discipline='', $lecturer='')
         {
@@ -249,6 +249,23 @@ class Documents extends CActiveRecord
              */
             if($q)
             {
+                /**
+                 * Обрабатываем и подготавливаем строку
+                 */
+                
+                $q = str_replace(',', ' ', $q);//заменяем запятые на пробелы
+                
+                $q = str_replace('?', '', $q); //Вырезаем знаки вопроса
+                
+                $q = str_replace('.', '', $q); //Вырезаем точки
+                
+                $q = str_replace('+', ' ', $q); //Заменяем плюс на пробел
+                
+                $q = str_replace('-', ' ', $q); //Заменяем тире на пробел
+                
+                /**
+                 * Здесь будет функционал по удалению предлогов и союзов из строки поиска
+                 */
                 
                 //разбиваем на массив слов
                 $query_array = explode(' ', $q);

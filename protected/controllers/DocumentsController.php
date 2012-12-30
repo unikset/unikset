@@ -651,35 +651,10 @@ class DocumentsController extends Controller
         ));
     }
     
-//    public function actionTextSearch()
-//    {
-//        $doc = new Documents();
-//        
-//        
-//        Yii::import('application.vendors.*');
-//        require_once('Zend/Search/Lucene.php');
-//        
-//        setlocale(LC_CTYPE, 'ru_RU.UTF-8');
-//        
-//        Zend_Search_Lucene_Analysis_Analyzer::setDefault(new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8());
-//
-//
-//        if (($term = Yii::app()->getRequest()->getParam('q', null)) !== null) 
-//        {
-//            $index = new Zend_Search_Lucene(Yii::getPathOfAlias('application.runtime.search'));
-//            $results = $index->find($term);
-//            $query = Zend_Search_Lucene_Search_QueryParser::parse($term);      
-//
-//
-//            $this->render('search', array(
-//                'doc' => $doc,
-//                'results'=>$results, 
-//                'term'=>$term, 
-//                'query'=>$query, 
-//            ));
-//        }
-//    }
-    
+    /**
+     * Поиск по строке поиска. Производится по тегам документа.
+     * В последствии оформить в виде обычного метода для включения в экшин search
+     */
     public function actionTagSearch()
     {
         if(isset($_POST['query']))

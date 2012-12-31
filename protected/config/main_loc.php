@@ -38,7 +38,7 @@ return array(
 	'components'=>array(
                 'request'=>array(
                     'enableCookieValidation'=>true,
-                    'enableCsrfValidation'=>true,
+                    //'enableCsrfValidation'=>true,
                 ),
 		'user'=>array(
                         //override class CWebUser

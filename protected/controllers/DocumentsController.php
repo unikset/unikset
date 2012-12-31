@@ -1,5 +1,4 @@
 <?php
-
 class DocumentsController extends Controller
 {
 
@@ -438,12 +437,7 @@ class DocumentsController extends Controller
         /**
          * Получаем контент(в linux заменить на соответствующий код)
          */
-        //$content = shell_exec('pdftotext '.$filename.' -');
-        $content = exec('C:\xpdf\bin\pdftotext '.$filename.' -', $output);
-        
-        echo CVarDumper::dump($content, 10, TRUE);
-        echo '<br>';
-        echo CVarDumper::dump($output, 10, TRUE);exit;
+        $content = shell_exec('pdftotext '.$filename.' -');
 	/**
          * Преобразуем кодировку
          */

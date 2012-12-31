@@ -20,17 +20,13 @@ class Stringi {
 	//            $field - поле, по которому группировать
 	public function alphaGroup($source,$field) {
 		$res = array();
-		$count = 0;
 		foreach($this->alphabet[$this->default_language] as $letter) {
 			foreach($source as $item) {
 				if(isset($res[strtoupper($item[$field][0])])&&$letter==strtoupper($item[$field][0])) {
 					array_push($res[$letter],$item);
-					array_splice($source,$count,1);
 				} else if(!isset($res[strtoupper($item[$field][0])])&&$letter==strtoupper($item[$field][0])) {
 					$res[strtoupper($item[$field][0])] = array($letter => $item);
-					array_splice($source,$count,1);
 				}
-				$count++;
 			}
 		}
 		return $res;

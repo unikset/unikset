@@ -1,30 +1,37 @@
 <?php
 $this->breadcrumbs=array(
-	'Documents',
+	Yii::t('app','Documents'),
 );
 ?>
 
-<div class="pagetitle"><h1>Documents</h1><div class="filter-menu"><a id="filter-link-1" href="javascript:toggleCountryFilter()">select country and university ▼</a><a id="filter-link-2" href="javascript:toggleLectureFilter()">select discipline and lecture ▼</a></div></div>
+<div class="pagetitle">
+    <h1><?php echo Yii::t('app','Documents');?></h1>
+    <div class="filter-menu">
+        <a id="filter-link-1" href="javascript:toggleCountryFilter()"><?php echo Yii::t('app','select country and university');?> ▼</a>
+        <a id="filter-link-2" href="javascript:toggleLectureFilter()"><?php echo Yii::t('app','select discipline and lecture');?> ▼</a>
+    </div>
+</div>
 <div id="document-filter">
 	<div id="document-filter-angle">
 		<img src="<?php echo Yii::app()->request->baseUrl ?>/images/angle-top.png"/>
 	</div>
-	<div id="document-filter-wrapper">
-	</div>
+	<div id="document-filter-wrapper"></div>
 </div>
 <div class="page-container">
 <?php 
 	Yii::import('application.api.*');
 	$str = new Stringi('en');
-	foreach($str->alphaGroup(Countries::model()->findAll(),'country') as $key => $val) {
+	foreach($str->alphaGroup(Countries::model()->findAll(),'country') as $key => $val) 
+        {
 		echo "<b>{$key}</b><br>";
-		foreach($val as $country) {
+		foreach($val as $country) 
+                {
 			echo "{$country->id} - {$country->country}<br>";
 		}
 	}
 ?>
 <?php //Форма поиска документа ?>
-<!--<div class="search-form"><?php echo $this->renderPartial('_search',array('doc'=>$doc,));?></div>-->
+<!--<div class="search-form"><?php //echo $this->renderPartial('_search',array('doc'=>$doc,));?></div>-->
 <?php
 if (isset($_POST['Countries']) && $_POST['Countries']['id']) 
 {
@@ -87,7 +94,7 @@ else
 //echo CVarDumper::dump($lec_id, 10, TRUE);
 if(isset($results))
 {
-    echo '<h1>Search results</h1>';
+    echo '<h1>'.Yii::t('app','Search results').'</h1>';
     //echo CVarDumper::dump($results, 10, TRUE);
     $this->renderPartial('_search_result', array('results'=>$results));
 }

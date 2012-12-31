@@ -1,18 +1,11 @@
 <?php
 $this->breadcrumbs=array(
-	'Documents'=>array('index'),
+	Yii::t('app','Documents') => array('index'),
 	$model->title=>array('view','id'=>$model->id),
-	'Update',
-);
-
-$this->menu=array(
-	array('label'=>'List Documents', 'url'=>array('index')),
-	array('label'=>'Create Documents', 'url'=>array('create')),
-	array('label'=>'View Documents', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Documents', 'url'=>array('admin')),
+	Yii::t('app','Update'),
 );
 ?>
 
-<h1>Update Documents <?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('app','Update Documents');?> <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

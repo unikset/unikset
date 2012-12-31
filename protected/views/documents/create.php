@@ -1,17 +1,13 @@
 <?php
 $this->breadcrumbs=array(
-	'Documents'=>array('index'),
-	'Create',
+	Yii::t('app','Documents') => array('index'),
+	Yii::t('app','Create'),
 );
-
-/*$this->menu=array(
-	array('label'=>'List Documents', 'url'=>array('index')),
-	array('label'=>'Manage Documents', 'url'=>array('admin')),
-);*/
 ?>
 
-<div class="pagetitle"><h1>Create Documents</h1></div>
+<div class="pagetitle">
+    <h1><?php echo Yii::t('app','Create Documents');?></h1>
+</div>
 <div class="page-container">
-
-<?php echo $this->renderPartial('_create', array('model'=>$model)); ?>
+    <?php echo $this->renderPartial('_create', array('model'=>$model)); ?>
 </div>

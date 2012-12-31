@@ -1,15 +1,10 @@
 <?php
 $this->breadcrumbs=array(
-	'Documents',
-);
-
-$this->menu=array(
-	array('label'=>'Create Documents', 'url'=>array('create')),
-	array('label'=>'Manage Documents', 'url'=>array('admin')),
+	Yii::t('app','Documents'),
 );
 ?>
 
-<h1>Documents</h1>
+<h1><?php echo Yii::t('app','Documents');?></h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

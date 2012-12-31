@@ -97,15 +97,15 @@ class Documents extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'title' => 'Title',
-			'description' => 'Description',
-                        'file_name' => 'File Name',
-			'author_name' => 'Author Name',
-			'file_info_id' => 'File Info',
-			'insert_date' => 'Insert Date',
-			'user_ip' => 'User Ip',
-			'is_university_document' => 'Is University Document',
-			'status' => 'Status',
+			'title' => Yii::t('app', 'Title'),
+			'description' => Yii::t('app', 'Description'),
+                        'file_name' => Yii::t('app', 'File Name'),
+			'author_name' => Yii::t('app', 'Author Name'),
+			'file_info_id' => Yii::t('app', 'File Info'),
+			'insert_date' => Yii::t('app', 'Insert Date'),
+			'user_ip' => Yii::t('app', 'User Ip'),
+			'is_university_document' => Yii::t('app', 'Is University Document'),
+			'status' => Yii::t('app', 'Status'),
 		);
 	}
 

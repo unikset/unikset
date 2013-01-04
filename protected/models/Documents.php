@@ -53,7 +53,7 @@ class Documents extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title, description, author_name, user_ip', 'required'),
-                        //array('file_name', 'file', 'types' => 'pdf', 'allowEmpty'=>true),
+                        array('file_name', 'file', 'types' => 'pdf', 'allowEmpty'=>true),
 			array('is_university_document, status, user_id', 'numerical', 'integerOnly'=>true),
 			array('title, author_name, user_ip', 'length', 'max'=>255),
 			array('description, link', 'length', 'max'=>1000),

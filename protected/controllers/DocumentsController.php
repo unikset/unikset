@@ -243,6 +243,11 @@ class DocumentsController extends Controller
                                     $lecturers = new Lecturers();
                                     $lecturers->attributes = $_POST['Lecturers'];
                                     /**
+                                     * Если у пользователя выбран язык в куках, пишем код языка в бд
+                                     */
+                                     $lecturers->lang = Yii::app()->language;
+                                    
+                                    /**
                                      * Проверяем куда отправлять документ, на постмодерацию или на премодерацию
                                      */
                                     if(Yii::app()->user->isGuest)
@@ -342,6 +347,11 @@ class DocumentsController extends Controller
                                  */
                                 $lecturers = new Lecturers();
                                 $lecturers->attributes = $_POST['Lecturers'];
+                                /**
+                                 * Если у пользователя выбран язык в куках, пишем код языка в бд
+                                 */
+                                $lecturers->lang = Yii::app()->language;
+                                
                                 /**
                                  * Проверяем куда отправлять документ, на постмодерацию или на премодерацию
                                  */

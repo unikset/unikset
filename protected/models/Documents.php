@@ -319,8 +319,8 @@ class Documents extends CActiveRecord
             {
                 $criteria->with=array('cities'=>array(
                             'select'=>'',
-                            'condition'=>'cities.id=:city',
-                            'params'=>array(':city'=>$city),
+                            'condition'=>'cities.id=:city AND cities.lang=:lang',
+                            'params'=>array(':city'=>$city, ':lang'=>Yii::app()->language),
                             'together'=>true,
                     ));
             }
@@ -329,8 +329,8 @@ class Documents extends CActiveRecord
             {
                 $criteria->with=array('cities'=>array(
                             'select'=>'',
-                            'condition'=>'cities.region_id=:region',
-                            'params'=>array(':region'=>$region),
+                            'condition'=>'cities.region_id=:region AND regions.lang=:lang',
+                            'params'=>array(':region'=>$region, ':lang'=>Yii::app()->language),
                             'together'=>true,
                     ));
             }
@@ -339,8 +339,8 @@ class Documents extends CActiveRecord
             {
                 $criteria->with=array('cities'=>array(
                             'select'=>'',
-                            'condition'=>'cities.country_id=:country',
-                            'params'=>array(':country'=>$country),
+                            'condition'=>'cities.country_id=:country AND cities.lang=:lang',
+                            'params'=>array(':country'=>$country, ':lang'=>Yii::app()->language),
                             'together'=>true,
                     ));
             }
@@ -359,8 +359,8 @@ class Documents extends CActiveRecord
             {
                 $criteria->with=array('discipline'=>array(
                             'select'=>'',
-                            'condition'=>'discipline.id=:dis',
-                            'params'=>array(':dis'=>$discipline),
+                            'condition'=>'discipline.id=:dis AND discipline.lang=:lang',
+                            'params'=>array(':dis'=>$discipline, ':lang'=>Yii::app()->language),
                             'together'=>true,
                     ));
             }
@@ -369,8 +369,8 @@ class Documents extends CActiveRecord
             {
                 $criteria->with=array('lecturer'=>array(
                             'select'=>'',
-                            'condition'=>'lecturer.id=:lec',
-                            'params'=>array(':lec'=>$lecturer),
+                            'condition'=>'lecturer.id=:lec AND lecturer.lang=:lang',
+                            'params'=>array(':lec'=>$lecturer, ':lang'=>Yii::app()->language),
                             'together'=>true,
                     ));
             }

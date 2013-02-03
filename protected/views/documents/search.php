@@ -1,4 +1,7 @@
 <?php
+Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl. '/js/jquery-ui-1.8.16.custom.min.js', CClientScript::POS_HEAD);  
+Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl. '/js/filter.js', CClientScript::POS_HEAD); 
+        
 $this->breadcrumbs=array(
 	Yii::t('app','Documents'),
 );

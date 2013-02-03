@@ -15,8 +15,10 @@
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap/jquery-ui-1.8.16.custom.css" />
-
-        <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/main.js"></script>
+        
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        
+        <!--<script type="text/javascript" src="<?php //echo Yii::app()->request->baseUrl; ?>/js/main.js"></script>-->
 
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
     </head>

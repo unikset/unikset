@@ -36,6 +36,11 @@ return array(
 
 	// application components
 	'components'=>array(
+                'clientScript'=>array(
+                    'scriptMap'=>array(
+                        'jquery.js'=>false,
+                    ),
+                ),
                 'request'=>array(
                     'enableCookieValidation'=>true,
                     //'enableCsrfValidation'=>true,

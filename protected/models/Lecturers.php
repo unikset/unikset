@@ -195,4 +195,36 @@ class Lecturers extends CActiveRecord
                 
 		return $this->findAll($criteria);
 	}
+        
+        /**
+         * Получение лекций по дисциплине
+         * @param int $dis идентификатор дисциплины
+         * 
+         * @return object
+         */
+        public function searchByDiscipline($discipline_id)
+	{
+		$criteria=new CDbCriteria;
+                
+                
+                
+                /**
+                 * джойним дисциплины
+                 */
+                $criteria->with=array(
+                        'discipline'=>array(
+                            'select'=>'*',
+                            'condition'=>'discipline.id=:dis',
+                            'params'=>array(':dis'=>$discipline_id),
+                            'together'=>true,
+                        ),
+                    );
+                //echo CVarDumper::dump($criteria, 10 ,TRUE);exit;
+   
+                $criteria->condition='t.status = 2';
+                
+                
+                
+		return $this->findAll($criteria);
+	}
 }

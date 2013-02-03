@@ -618,11 +618,15 @@ class DocumentsController extends Controller
     	* Подключаем filter.js
     	*/
         Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl. '/js/jquery-ui-1.8.16.custom.min.js', CClientScript::POS_HEAD);  
-        Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl. '/js/filter.js', CClientScript::POS_HEAD);  
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl. '/js/filter.js', CClientScript::POS_HEAD); 
+        
+        
         /**
          * Создаем объект поиска документа
          */
         $doc = new Documents('search');
+        
+        $universities = Universities::model()->findAll();
         
         /**
          * Очищаем все атрибуты по умолчанию
@@ -630,24 +634,25 @@ class DocumentsController extends Controller
         $doc->unsetAttributes();  // clear any default values
         
         $results = NULL;
+        
         /**
          * Если пользователь нажал кнопку Search
          * Собираем параметры из массива POST
          */
-        if (isset($_POST['Documents']))
+        if (isset($_POST['Search']))
         {
             //echo CVarDumper::dump($_POST, 10 ,true); exit;
             /**
              * Получаем текстовую строку
              */
             $q          = Yii::app()->request->getPost('query');
-            $is_univer  = $_POST['Documents']['is_university_document']; 
-            $city       = $_POST['Cities']['id']; 
-            $region     = $_POST['Regions']['id'];
-            $country    = $_POST['Countries']['id'];
-            $university = $_POST['Universities']['id'];
-            $discipline = $_POST['Discipline']['id']; 
-            $lecturer   = $_POST['Lecturers']['id']; 
+            $is_univer  = $_POST['is_university_document']; 
+            $city       = $_POST['city_id']; 
+            $region     = $_POST['region_id'];
+            $country    = $_POST['country_id'];
+            $university = $_POST['university_id'];
+            $discipline = $_POST['discipline_id']; 
+            $lecturer   = $_POST['lecture_id']; 
  
             
             $document = new Documents();
@@ -657,6 +662,7 @@ class DocumentsController extends Controller
         $this->render('search', array(
             'doc' => $doc,
             'results'=>$results,
+            'universities'=>$universities,
         ));
     }
     

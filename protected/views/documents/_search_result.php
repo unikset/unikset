@@ -1,3 +1,6 @@
+<?php if(!$results->data):?>
+<h2>No results</h2>
+<?php else:?>
 <?php foreach ($results->data as $data):?>
  
 <div class="view">  
@@ -44,3 +47,4 @@
 
 </div>
 <?php   endforeach;?>
+<?php endif;?>

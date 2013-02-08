@@ -129,64 +129,64 @@ $this->breadcrumbs=array(
 <?php echo $this->renderPartial('_search',array('doc'=>$doc,));?>
 
 <?php
-if (isset($_POST['Countries']) && $_POST['Countries']['id']) 
-{
-    $country = $_POST['Countries']['id'];
-}
-else 
-{
-    $country = -1;
-}
-//echo CVarDumper::dump($country, 10, TRUE);
-
-if (isset($_POST['Regions']) && $_POST['Regions']['id']) 
-{
-    $region = $_POST['Regions']['id'];
-}
-else 
-{
-    $region = -1;
-}
-//echo CVarDumper::dump($country, 10, TRUE);
-
-if (isset($_POST['Cities']) && $_POST['Cities']['id']) 
-{
-    $city = $_POST['Cities']['id'];
-}
-else 
-{
-    $city = -1;
-}
-//echo CVarDumper::dump($city, 10, TRUE);
-
-if (isset($_POST['Universities']) && $_POST['Universities']['id']) 
-{
-    $uni = $_POST['Universities']['id'];
-}
-else 
-{
-    $uni = -1;
-}
-//echo CVarDumper::dump($uni, 10, TRUE);
-
-if(isset($_POST['Discipline']) && $_POST['Discipline']['id'])
-{
-    $dis_id = $_POST['Discipline']['id'];
-}
-else
-{
-    $dis_id = -1;
-}
-//echo CVarDumper::dump($dis_id, 10, TRUE);
-
-if(isset($_POST['Lecturers']) && $_POST['Lecturers']['id'])
-{
-    $lec_id = $_POST['Lecturers']['id'];
-}
-else
-{
-    $lec_id = -1;
-}
+//if (isset($_POST['Countries']) && $_POST['Countries']['id']) 
+//{
+//    $country = $_POST['Countries']['id'];
+//}
+//else 
+//{
+//    $country = -1;
+//}
+////echo CVarDumper::dump($country, 10, TRUE);
+//
+//if (isset($_POST['Regions']) && $_POST['Regions']['id']) 
+//{
+//    $region = $_POST['Regions']['id'];
+//}
+//else 
+//{
+//    $region = -1;
+//}
+////echo CVarDumper::dump($country, 10, TRUE);
+//
+//if (isset($_POST['Cities']) && $_POST['Cities']['id']) 
+//{
+//    $city = $_POST['Cities']['id'];
+//}
+//else 
+//{
+//    $city = -1;
+//}
+////echo CVarDumper::dump($city, 10, TRUE);
+//
+//if (isset($_POST['Universities']) && $_POST['Universities']['id']) 
+//{
+//    $uni = $_POST['Universities']['id'];
+//}
+//else 
+//{
+//    $uni = -1;
+//}
+////echo CVarDumper::dump($uni, 10, TRUE);
+//
+//if(isset($_POST['Discipline']) && $_POST['Discipline']['id'])
+//{
+//    $dis_id = $_POST['Discipline']['id'];
+//}
+//else
+//{
+//    $dis_id = -1;
+//}
+////echo CVarDumper::dump($dis_id, 10, TRUE);
+//
+//if(isset($_POST['Lecturers']) && $_POST['Lecturers']['id'])
+//{
+//    $lec_id = $_POST['Lecturers']['id'];
+//}
+//else
+//{
+//    $lec_id = -1;
+//}
 //echo CVarDumper::dump($lec_id, 10, TRUE);
 if(isset($results))
 {
@@ -197,10 +197,11 @@ if(isset($results))
 else
 {
 
-    $this->widget('zii.widgets.CListView', array(
-            'dataProvider'=>$doc->search($country, $region, $city, $uni, $dis_id, $lec_id),
-            'itemView'=>'_view',
-    )); 
+//    $this->widget('zii.widgets.CListView', array(
+//            'dataProvider'=>$doc->search($country, $region, $city, $uni, $dis_id, $lec_id),
+//            'itemView'=>'_view',
+//    )); 
+    echo '<h2>No results</h2>';
 
 }
 

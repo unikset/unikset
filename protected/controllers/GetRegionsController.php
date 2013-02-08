@@ -90,10 +90,11 @@ class GetRegionsController extends Controller
                 */
                $str = new Stringi('en');
                 
+               $loc1 = '';
                 /**
                  * Заголовок блока
                  */                        
-                $loc1 = '<h2>Select a region</h2><br>';
+                $loc1 .= '<h2>Select a region <span class="region_btn btn btn-small">Back to country</span></h2><br>';
                 /**
                  * Если запрос вернул дочерние элементы локации, 
                  * формируем список

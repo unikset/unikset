@@ -24,7 +24,7 @@ class GetLectureController extends Controller
                      */
                     $data2 = CHtml::listData($data1, 'id', 'name');
                     
-                    $lect1 .= '<h2>Select a lecture</h2><br>';
+                    $lect1 .= '<h2>Select a lecture <span class="lecture_btn btn btn-small">Back to disciplines</span></h2><br>';
                     $first_letter='';
                     /**
                      * Формируем массив опшинов

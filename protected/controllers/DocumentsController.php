@@ -779,6 +779,7 @@ class DocumentsController extends Controller
         }
     }
     
+    
     public function actionGetRegions()
     {
          $lect1 = NULL;
@@ -822,7 +823,7 @@ class DocumentsController extends Controller
              */
             if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
             {
-                $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['uplevel_id']);
+                $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['country_id']);
                 
                 $lect1 = '<option value="">select lecturer</option>';
                 /**
@@ -892,7 +893,7 @@ class DocumentsController extends Controller
              */
             if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
             {
-                $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['uplevel_id']);
+                $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['region_id']);
                 
                 $lect1 = '<option value="">select lecturer</option>';
                 /**
@@ -966,7 +967,7 @@ class DocumentsController extends Controller
                  */
                 if ($_POST['discipline'] != -1 && $_POST['discipline'] != -2)
                 {
-                    $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['uplevel_id']);
+                    $data3 = Lecturers::model()->searchByFlag($_POST['discipline'], 0, $_POST['city_id']);
 
                     $lect1 = '<option value="">select lecturer</option>';
                     /**
@@ -1327,20 +1328,7 @@ class DocumentsController extends Controller
             'lect2' => $lect2,
         ));
     }
-    /**
-     * Обработчик тыканья по выпадающему списку лекций
-     * Если лекция выбрана, то поле ввода блокируем
-     */
-    public function actionDynamiclecturer2()
-    {
-        if ($_POST['lecturer'] != '')
-            $lect = 1;
-        else
-            $lect = 0;
-        echo CJSON::encode(array(
-            'lect' => $lect,
-        ));
-    }
+  
     
     /**
      * Обработчик ввода символов в поле ввода названия лекции

@@ -51,6 +51,10 @@
 		<?php echo $form->error($model,'author_name'); ?>
 	</div>
         
+        
+        <div class="select-box">
+            
+  
         <div id="side_l" style="width:300px">
 
 
@@ -85,25 +89,24 @@
                 <?php  echo $form->dropDownList($country,'[2]id', array(),
                         array('prompt' => 'select country',
                               'ajax'=>array(
-                                               'type'=>'POST',
-                                               'url'=>CController::createUrl('getRegions'),
-                                               'data' => array('uplevel_id' => 'js:exist_id("Countries_2_id")',
-                                                               'downlevel' => '0',
-                                                               'downlevel_id' => 'js:exist_id("Documents_is_university_document")',
-                                                               'discipline' => 'js:exist_id("Discipline_id")',
-                                                               'todo' => 'create',),
-                                               'dataType' => 'json',
-                                               'success'=> "function(data){
-                                                   if (data.loc2 == 1) $('#loc_3').show();
-                                                   else $('#loc_3').hide(); 
-                                                          
-                                                   $('#Universities_id').html('<option value= >select university</option>');
-                                                   $('#univer').hide();
-                                                          
-                                                   $('#Regions_3_id').html(data.loc1); 
-                                                   $('#Lecturers_id').html(data.lect1);
-                                                }"
-                                           ),'class'=>'validate[required]'
+                                   'type'=>'POST',
+                                   'url'=>CController::createUrl('getRegions'),
+                                   'data' => array('country_id' => 'js:exist_id("Countries_2_id")',
+                                                   'is_university' => 'js:exist_id("Documents_is_university_document")',
+                                                   'discipline' => 'js:exist_id("Discipline_id")',
+                                                   'todo' => 'create',),
+                                   'dataType' => 'json',
+                                   'success'=> "function(data){
+                                       if (data.loc2 == 1) $('#loc_3').show();
+                                       else $('#loc_3').hide(); 
+
+                                       $('#Universities_id').html('<option value= >select university</option>');
+                                       $('#univer').hide();
+
+                                       $('#Regions_3_id').html(data.loc1); 
+                                       $('#Lecturers_id').html(data.lect1);
+                                    }"
+                               ),'class'=>'validate[required]'
                              ));?>
             </div>
             <?php //----------------регионы---------------------?>
@@ -113,25 +116,24 @@
                 <?php  echo $form->dropDownList($region,'[3]id', array(),
                         array('prompt' => 'select region',
                               'ajax'=>array(
-                                               'type'=>'POST',
-                                               'url'=>CController::createUrl('getCities'),
-                                               'data' => array('uplevel_id' => 'js:exist_id("Regions_3_id")',
-                                                               'downlevel' => '0',
-                                                               'downlevel_id' => 'js:exist_id("Documents_is_university_document")',
-                                                               'discipline' => 'js:exist_id("Discipline_id")',
-                                                               'todo' => 'create',),
-                                               'dataType' => 'json',
-                                               'success'=> "function(data){
-                                                   if (data.loc2 == 1) $('#loc_4').show();
-                                                   else $('#loc_4').hide(); 
-                                                          
-                                                   $('#Universities_id').html('<option value= >select university</option>');
-                                                   $('#univer').hide();
-                                                          
-                                                   $('#Cities_4_id').html(data.loc1); 
-                                                   $('#Lecturers_id').html(data.lect1);
-                                                }"
-                                           ),'class'=>'validate[required]'
+                                   'type'=>'POST',
+                                   'url'=>CController::createUrl('getCities'),
+                                   'data' => array('region_id' => 'js:exist_id("Regions_3_id")',
+                                                   'is_university' => 'js:exist_id("Documents_is_university_document")',
+                                                   'discipline' => 'js:exist_id("Discipline_id")',
+                                                   'todo' => 'create',),
+                                   'dataType' => 'json',
+                                   'success'=> "function(data){
+                                       if (data.loc2 == 1) $('#loc_4').show();
+                                       else $('#loc_4').hide(); 
+
+                                       $('#Universities_id').html('<option value= >select university</option>');
+                                       $('#univer').hide();
+
+                                       $('#Cities_4_id').html(data.loc1); 
+                                       $('#Lecturers_id').html(data.lect1);
+                                    }"
+                               ),'class'=>'validate[required]'
                              ));?>
             </div>
             <?php //----------------------города-----------------------?>
@@ -141,22 +143,21 @@
                 <?php  echo $form->dropDownList($city,'[4]id', array(),
                         array('prompt' => 'select city',
                               'ajax'=>array(
-                                               'type'=>'POST',
-                                               'url'=>CController::createUrl('getUniversity'),
-                                               'data' => array('uplevel_id' => 'js:exist_id("Cities_4_id")',
-                                                               'downlevel' => '2',
-                                                               'downlevel_id' => 'js:exist_id("Cities_2_id")',
-                                                               'discipline' => 'js:exist_id("Discipline_id")',
-                                                               'todo' => 'create',),
-                                               'dataType' => 'json',
-                                               'success'=> "function(data){
-                                                   if (data.loc2 == 1) $('#univer').show();
-                                                   else $('#univer').hide();
-                                                   
-                                                   $('#Universities_id').html(data.loc1); 
-                                                   $('#Lecturers_id').html(data.lect1);
-                                                }"
-                                            ),'class'=>'validate[required]'
+                                   'type'=>'POST',
+                                   'url'=>CController::createUrl('getUniversity'),
+                                   'data' => array('city_id' => 'js:exist_id("Cities_4_id")',
+                                                   'downlevel_id' => 'js:exist_id("Cities_2_id")',
+                                                   'discipline' => 'js:exist_id("Discipline_id")',
+                                                   'todo' => 'create',),
+                                   'dataType' => 'json',
+                                   'success'=> "function(data){
+                                       if (data.loc2 == 1) $('#univer').show();
+                                       else $('#univer').hide();
+
+                                       $('#Universities_id').html(data.loc1); 
+                                       $('#Lecturers_id').html(data.lect1);
+                                    }"
+                                ),'class'=>'validate[required]'
                              ));?>
             </div>
             <?php //---------------Университеты --------------------?>
@@ -182,7 +183,7 @@
     
         </div>
     
-        <div>
+        <div id="side_2">
             <?php //---------------Дисциплины -------------------------?>
             <div class="row">
 		<?php $dis = new Discipline();
@@ -214,46 +215,18 @@
                       echo $form->label($lect,'name'); ?>
                 <?php echo $form->dropDownList($lect,'id', array(),
                         array(  'empty'=>'select discipline',
-                                'ajax'=>array(
-                                       'type'=>'POST',
-                                       'url'=>CController::createUrl('dynamiclecturer2'),
-                                       'data' => array('lecturer' => 'js:$(this).val()',),
-                                       'dataType' => 'json',
-                                       'success'=> "function(data){
-                                           if (data.lect == 1) { 
-                                                $('#Lecturers_name').attr('disabled', true);
-                                           }
-                                           else { 
-                                                $('#Lecturers_name').attr('disabled', false);
-                                           }
-                                       }"
-                                    ),'class'=>'validate[required]'
+                                'class'=>'validate[required]'
                             )); ?>
-
-		<?php echo $form->label($lect,'name'); ?>
-		<?php echo $form->textField($lect,'name', array(
-                    'onkeyup' => CHtml::ajax(array(
-                        'type'=>'POST',
-                        'url'=>CController::createUrl('dynamiclecturer_new'),
-                        'data' => array('lecturer' => 'js:$(this).val()',),
-                        'dataType' => 'json',
-                        'success'=> "function(data){
-                            if (data.lect == 1) { 
-                                $('#Lecturers_id').attr('disabled', true);
-                            }
-                            else { 
-                                $('#Lecturers_id').attr('disabled', false);
-                            }
-                        }"
-                    )),'class'=>'validate[required]'
-                )); ?>
                 
             </div>
             
         </div>
-
+            
+        </div>
+        
+        
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('app','Create') : Yii::t('app','Save')); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('app','Create') : Yii::t('app','Save'), array('class'=>'btn btn-success')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
@@ -292,30 +265,5 @@
         });
         
         $("#documents-form").validationEngine();
-        
-        $('#Lecturers_name').keyup(function(){
-            var lname = $('#Lecturers_name').val();
-            if(lname.length > 0)
-            {
-                $('#Lecturers_id').removeClass('validate[required]');
-                $('.Lecturers_idformError').remove();
-            }
-            else
-            {
-                $('#Lecturers_id').addClass('validate[required]');
-            }
-        });
-        $('#Lecturers_id').change(function(){
-            var lid = $(this).val();
-            if(lid > 0)
-            {
-                $('#Lecturers_name').removeClass('validate[required]');
-                $('.Lecturers_nameformError').remove(); 
-            }
-            else
-            {
-                $('#Lecturers_name').addClass('validate[required]');
-            }
-        });
     });
 </script>

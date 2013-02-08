@@ -36,6 +36,12 @@
 
 div.form
 {
+    border: 1px solid #CCCCCC;
+    border-radius: 10px 10px 10px 10px;
+    margin-left: 20px;
+    overflow: hidden;
+    padding: 20px;
+    width: 90%;
 }
 
 div.form input,
@@ -158,6 +164,39 @@ div.wide.form .buttons, div.wide.form .hint, div.wide.form .errorMessage
 	clear: left;
 	padding-left: 110px;
 }
-#side_l {
+.select-box{
+    background: none repeat scroll 0 0 #F9F9F9;
+    border: 1px solid #CCCCCC;
+    border-radius: 10px 10px 10px 10px;
+    overflow: hidden;
+    padding: 20px;
+}
+#side_l, #side_2{
     float: left;
+    width: 300px;
+}
+.buttons{
+    clear: both;
+    float: left;
+}
+select{
+    font-size: 13px;
+  font-weight: normal;
+  line-height: 28px;
+  display: inline-block;
+  width: 210px;
+  height: 28px;
+  padding: 4px;
+  margin-bottom: 9px;
+  font-size: 13px;
+  line-height: 18px;
+  color: #555555;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+}
+#query{
+    width: 300px;
 }

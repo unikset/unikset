@@ -15,7 +15,7 @@ class GetUniverController extends Controller
             if($univer)
             {
                 $first_letter = "";
-                $university .= '<h2>Select a university</h2><br>';
+                $university .= '<h2>Select a university <span class="univer_btn btn btn-small">Back to cities</span></h2><br>';
                 foreach ($univer as $res)
                 {  
                     //Если первая буква строки не равна букве которая записана в переменную $first_letter

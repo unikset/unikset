@@ -76,7 +76,7 @@ class GetCitiesController extends Controller
                  * формируем список опшинов
                  */
                 $first_letter = "";
-                $loc1 .= '<h2>Select a city</h2><br>';
+                $loc1 .= '<h2>Select a city <span class="city_btn btn btn-small">Back to regions</span></h2><br>';
                 foreach ($cities as $value => $subcategory)
                 {  
                     //Если первая буква строки не равна букве которая записана в переменную $first_letter

@@ -25,9 +25,9 @@ class SearchTagWidget extends CWidget
     }
     public function renderContent()
     {
-        echo CHtml::label('Text search', 'query');
+        echo CHtml::label('Search on text', 'query');
        //echo CHtml::beginForm(array('documents/tagSearch'), 'post', array('style'=> 'inline'));
-        echo CHtml::textField('query', '', array('placeholder'=> 'search...','style'=>'width:140px;'));
+        echo CHtml::textField('query', '', array('placeholder'=> 'search...'));
         //echo CHtml::submitButton('Search tag');
         //echo CHtml::endForm('');
     }

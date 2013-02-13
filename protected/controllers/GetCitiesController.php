@@ -7,6 +7,7 @@ class GetCitiesController extends Controller
         {
             
             $loc1 = '';
+            $university = '';
             /**
              * Это мы получаем город
              */
@@ -51,7 +52,7 @@ class GetCitiesController extends Controller
                         $university .= "<strong class='letter'>{$first_letter}</strong><br>";
                     }
 
-                    $university .= CHtml::link($res->title, $res->id, array('id'=>'u-'.$u->id)).'<br>';   
+                    $university .= CHtml::link($res->title, $res->id, array('id'=>'u-'.$res->id)).'<br>';   
                 }
                 $university .= '<br><br>';
                 $university .= '
@@ -76,7 +77,7 @@ class GetCitiesController extends Controller
                  * формируем список опшинов
                  */
                 $first_letter = "";
-                $loc1 .= '<h2>Select a city <span class="city_btn btn btn-small">Back to regions</span></h2><br>';
+                $loc1 .= '<h2>Select a city </h2><br><span class="city_btn">&larr; Back to regions</span><br>';
                 foreach ($cities as $value => $subcategory)
                 {  
                     //Если первая буква строки не равна букве которая записана в переменную $first_letter
@@ -100,7 +101,7 @@ class GetCitiesController extends Controller
                             event.preventDefault();
                             var id = $(this).attr("href");
                             var city = $(this).html();
-                            $.post("/getUniver", { city_id: id },
+                            $.post("'.Yii::app()->params['subdir'].'/getUniver", { city_id: id },
                               function(data){
                                   $(".string-history > #l-h").append("<span class=\"del_city\">&rarr; "+city+" <span id=\"del_city\">x</span></span>");
                                   $(".univer").replaceWith("<div class=\"univer100\">"+data.univers+"</div>");

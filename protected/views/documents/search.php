@@ -1,7 +1,14 @@
 <?php
 Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl. '/js/jquery-ui-1.8.16.custom.min.js', CClientScript::POS_HEAD);  
-Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl. '/js/filter.js', CClientScript::POS_HEAD); 
-        
+if($_SERVER['SERVER_ADDR']=='127.0.0.1')
+{
+   Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl. '/js/filter.loc.js', CClientScript::POS_HEAD); 
+}
+else
+{
+   Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl. '/js/filter.js', CClientScript::POS_HEAD); 
+}
+       
 $this->breadcrumbs=array(
 	Yii::t('app','Documents'),
 );
@@ -61,7 +68,7 @@ $this->breadcrumbs=array(
                             event.preventDefault();
                             var id = $(this).attr('href');
                             var country = $(this).html();
-                            $.post("/getRegions", { country_id: id },
+                            $.post("<?php echo Yii::app()->params['subdir'];?>/getRegions", { country_id: id },
                               function(data){ 
                                   $('.string-history > #l-h').append("<span class='del_country'>"+country+"<span id='del_country'>x</span></span>");
                                   $('.locations').replaceWith('<div class="locations">'+data.loc1+'</div>');
@@ -190,7 +197,7 @@ $this->breadcrumbs=array(
 //echo CVarDumper::dump($lec_id, 10, TRUE);
 if(isset($results))
 {
-    echo '<h1>'.Yii::t('app','Search results').'</h1>';
+    echo '<h1 style="padding-left:20px;">'.Yii::t('app','Search results').'</h1>';
     //echo CVarDumper::dump($results, 10, TRUE);
     $this->renderPartial('_search_result', array('results'=>$results));
 }
@@ -201,7 +208,8 @@ else
 //            'dataProvider'=>$doc->search($country, $region, $city, $uni, $dis_id, $lec_id),
 //            'itemView'=>'_view',
 //    )); 
-    echo '<h2>No results</h2>';
+    echo '<h1 style="padding-left:20px;">'.Yii::t('app','No results').'</h1>';
+    echo '<div style="height:20px;"></div>';
 
 }
 

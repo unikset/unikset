@@ -33,7 +33,7 @@ class GetDisciplineController extends Controller
                 var discipline_id = $(this).attr("href");
                 $("#discipline_id").val(discipline_id);
                 var discipline = $(this).html();
-                $.post("/getLecture", { discipline_id: discipline_id },
+                $.post("'.Yii::app()->params['subdir'].'/getLecture", { discipline_id: discipline_id },
                   function(data){
                       $(".string-history > #d-h").append("<span class=\"del_discipline\">&rarr; "+discipline+" <span id=\"del_discipline\">x</span></span>");
                       $(".discipline").replaceWith("<div class=\"discipline\">"+data.lect+"</div>");

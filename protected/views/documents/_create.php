@@ -10,7 +10,6 @@
     }
 </script>
 <div class="form">
-
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'documents-form',
 	'enableAjaxValidation'=>false,

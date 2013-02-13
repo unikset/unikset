@@ -4,7 +4,8 @@ class GetUniverController extends Controller
     public function actionIndex()
     {
         if(Yii::app()->request->isAjaxRequest)
-        {     
+        {   
+            $university = '';
             /**
              * Получаем универы которые есть в этой стране
              */
@@ -15,7 +16,7 @@ class GetUniverController extends Controller
             if($univer)
             {
                 $first_letter = "";
-                $university .= '<h2>Select a university <span class="univer_btn btn btn-small">Back to cities</span></h2><br>';
+                $university .= '<h2>Select a university </h2><br><span class="univer_btn">&larr; Back to cities</span><br>';
                 foreach ($univer as $res)
                 {  
                     //Если первая буква строки не равна букве которая записана в переменную $first_letter
@@ -26,7 +27,7 @@ class GetUniverController extends Controller
                         $university .= "<strong class='letter'>{$first_letter}</strong><br>";
                     }
 
-                    $university .= CHtml::link($res->title, $res->id, array('id'=>'u-'.$u->id)).'<br>';   
+                    $university .= CHtml::link($res->title, $res->id, array('id'=>'u-'.$res->id)).'<br>';   
                 }
                 $university .= '<br><br>';
                 $university .= '
@@ -38,6 +39,7 @@ class GetUniverController extends Controller
                             $("#university_id").val(univer_id);
                             $(".del_univer").remove();
                             $(".string-history > #l-h").append("<sapn class=\"del_univer\">&rarr; "+university+" <span id=\"del_univer\">x</span></span>");
+                            toggleCountryFilter();
                         });
                     </script>
                     ';

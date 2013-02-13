@@ -180,7 +180,9 @@ a img {
     cursor: pointer;
 }
 .region_btn, .city_btn, .univer_btn, .lecture_btn{
-    float: right;
+    float: left;
+    color: #0691EE;
+    cursor: pointer;
 }
 .btn {
   display: inline-block;
@@ -551,4 +553,55 @@ input[type="submit"].btn.btn-mini {
   *padding-top: 1px;
   *padding-bottom: 1px;
 }
-
+/*----------------строка поиска -------------------------*/
+.input-append, .input-prepend { 
+font-size: 0px;
+margin-bottom: 5px;
+white-space: nowrap;
+}
+.input-append .add-on:last-child, .input-append .btn:last-child, .input-append .btn-group:last-child > .dropdown-toggle { 
+border-radius: 0px 4px 4px 0px;
+}
+.input-append .add-on, .input-append .btn, .input-append .btn-group { 
+margin-left: -1px;
+}
+.input-append .btn{ 
+border-radius: 0px;
+vertical-align: top;
+}
+.view{
+    clear: both;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    overflow: hidden;
+}
+.view hr{
+    color: #aaaaaa;
+    height: 1px;
+}
+.doc-title a{
+    color: #666666;
+    font-family: "Segoe UI Light";
+    font-size: 22px;
+    font-weight: bold;
+}
+.doc-description{
+    color: #888888;
+}
+.doc-author{
+    color: #888888;
+    float: right;
+}
+.doc-date{
+    color: #888888;
+    float: left;
+}
+.details{
+    font-family: "Segoe UI Light";
+    float: left;
+    padding: 20px;
+    width: 75%;
+}
+.details iframe{
+    margin: 0 auto;
+}

@@ -16,7 +16,8 @@
         }
     }
 </script>    
-<div class="wide form">
+<!--<div class="wide form">-->
+<div class="wide">
      <?php //$this->widget('SearchWidget');?>
     
     
@@ -29,8 +30,7 @@
     ?>
     <?php //текстовое поле для полнотекстового поиска?>
     <div class="row">
-       <!-- Виджет текстового поля поиска -->
-        <?php $this->widget('SearchTagWidget');?>
+       
         <?php //echo $form->label($doc, 'link'); ?>
         <?php //echo $form->textField($doc, 'link'); ?>
        <?php echo CHtml::hiddenField('is_university_document','0');?>
@@ -40,8 +40,9 @@
         <?php echo CHtml::hiddenField('university_id');?>
         <?php echo CHtml::hiddenField('discipline_id');?>
         <?php echo CHtml::hiddenField('lecture_id');?>
-
-       <?php echo CHtml::submitButton(Yii::t('app','Search'), array('name'=>'Search'), array('class'=>'btn')); ?>
+        
+        <!-- Виджет текстового поля поиска -->
+        <?php $this->widget('SearchTagWidget');?>
     </div>
 
 <?php $this->endWidget(); ?>

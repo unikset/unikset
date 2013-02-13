@@ -3,47 +3,29 @@
 <?php else:?>
 <?php foreach ($results->data as $data):?>
  
-<div class="view">  
-	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
-	<br />
+<div class="view"> 
+	<div class="doc-title"><?php echo CHtml::link(CHtml::encode($data->title), array('view', 'id'=>$data->id)); ?></div>
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('title')); ?>:</b>
-	<?php echo CHtml::encode($data->title); ?>
-	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('description')); ?>:</b>
-	<?php echo CHtml::encode($data->description); ?>
-	<br />
+	<div class="doc-description"><?php echo CHtml::encode($data->description); ?></div>
+        <hr>
+        
+        <div class="doc-author">
+            <b><?php echo CHtml::encode($data->getAttributeLabel('author_name')); ?>:</b>
+            <?php echo CHtml::encode($data->author_name); ?>
+        </div>
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('author_name')); ?>:</b>
-	<?php echo CHtml::encode($data->author_name); ?>
-	<br />
+        <div class="doc-date">
+            <b><?php echo CHtml::encode($data->getAttributeLabel('insert_date')); ?>:</b>
+            <?php echo CHtml::encode($data->insert_date); ?>
+        </div>
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('link')); ?>:</b>
-	<?php echo CHtml::encode($data->link); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('insert_date')); ?>:</b>
-	<?php echo CHtml::encode($data->insert_date); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('user_ip')); ?>:</b>
-	<?php echo CHtml::encode($data->user_ip); ?>
-	<br />
         
         
 
-	<?php /*
-	<b><?php echo CHtml::encode($data->getAttributeLabel('is_university_document')); ?>:</b>
-	<?php echo CHtml::encode($data->is_university_document); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('status')); ?>:</b>
-	<?php echo CHtml::encode($data->status); ?>
-	<br />
-
-	*/ ?>
+        <?php if($data->link):?>
+	<?php //echo CHtml::encode($data->link); ?>
+	<?php endif;?>
 
 </div>
 <?php   endforeach;?>

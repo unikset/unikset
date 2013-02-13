@@ -71,7 +71,7 @@ class DocumentsController extends Controller
          */
         Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish('css/').'/customMessages.css', 'screen'); 
         Yii::app()->clientScript->registerCssFile(Yii::app()->assetManager->publish('css/').'/validationEngine.jquery.css', 'screen');  
-        Yii::app()->clientScript->registerScriptFile(Yii::app()->assetManager->publish('js/'). '/languages/jquery.validationEngine-en.js', CClientScript::POS_HEAD);  
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->assetManager->publish('js/'). '/languages/jquery.validationEngine-'.Yii::app()->language.'.js', CClientScript::POS_HEAD);  
         Yii::app()->clientScript->registerScriptFile(Yii::app()->assetManager->publish('js/'). '/jquery.validationEngine.js', CClientScript::POS_HEAD);  
         
         $model = new Documents('create');
@@ -203,96 +203,101 @@ class DocumentsController extends Controller
                                 if($document_lecturers->save())
                                 {
                                     //echo CVarDumper::dump($document_lecturers->id, 10, TRUE);exit;
-                                    Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
+                                    Yii::app()->user->setFlash('message','Document is sent to the moderation - '.$success);
                                     $this->redirect(Yii::app()->homeUrl);
                                 }
                             }
-                            elseif($_POST['Lecturers']['name'])
-                            {
-                                /**
-                                 * Проверим на всякий случай есть ли лекция с таким названием
-                                 * в таблице лекций
-                                 */
-                                $criteria = new CDbCriteria();
-                                $criteria->compare('name', $_POST['Lecturers']['name']);
-                                $exists_lectures = Lecturers::model()->find($criteria);
-                                /**
-                                 * Если лекция существует, сразу пишем в смежную
-                                 * таблицу документ - лекция
-                                 */
-                                if($exists_lectures)
-                                {
-                                    /**
-                                     * Пишем в смежную таблицу докумен - лекция
-                                     */
-                                    $document_lecturers = new DocumentLecturers();
-                                    $document_lecturers->document_id = $model->id;
-                                    $document_lecturers->lecturer_id = $exists_lectures->id;
-                                    if($document_lecturers->save())
-                                    {
-                                        Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
-                                        $this->redirect(Yii::app()->homeUrl);
-                                    }
-                                }
-                                else
-                                {
-                                    /**
-                                     * Если лекции нет в таблице, значит это
-                                     * Новая лекция нужно ее сохранить
-                                     */
-                                    $lecturers = new Lecturers();
-                                    $lecturers->attributes = $_POST['Lecturers'];
-                                    /**
-                                     * Если у пользователя выбран язык в куках, пишем код языка в бд
-                                     */
-                                     $lecturers->lang = Yii::app()->language;
-                                    
-                                    /**
-                                     * Проверяем куда отправлять документ, на постмодерацию или на премодерацию
-                                     */
-                                    if(Yii::app()->user->isGuest)
-                                    {
-                                        /**
-                                         * Если пользователь не авторизован, ставим статус 0(отправить на премодерацию)
-                                         */
-                                        $lecturers->status = 0;
-                                    }
-                                    elseif (Yii::app()->user->role === 'admin' || Yii::app()->user->role === 'moderator')
-                                    {
-                                        /**
-                                         * Если документ загрузил модератор или админ
-                                         * Сразу ставим статус 2 одобрен
-                                         */
-                                        $lecturers->status = 2;
-                                    }
-                                    else 
-                                    {
-                                        /**
-                                         * Если пользователь авторизован, ставим статус 1 (отправить на постмодерацию)
-                                         */
-                                        $lecturers->status = 1;
-                                    }
-
-                                    //echo CVarDumper::dump($lecturers->attributes, 10, TRUE);exit;
-
-                                    if($lecturers->save())
-                                    {
-                                            /**
-                                             * Если лекция сохранена
-                                             * Пишем в смежную таблицу докумен - лекция
-                                             */
-                                            $document_lecturers = new DocumentLecturers();
-                                            $document_lecturers->document_id = $model->id;
-                                            $document_lecturers->lecturer_id = $lecturers->id;
-                                            if($document_lecturers->save())
-                                            {
-                                                Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
-                                                $this->redirect(Yii::app()->homeUrl);
-                                            }
-                                    }
-                                }
-                                
-                            }
+//                            elseif($_POST['Lecturers']['name'])
+//                            {
+//                                /**
+//                                 * Проверим на всякий случай есть ли лекция с таким названием
+//                                 * в таблице лекций
+//                                 */
+//                                $criteria = new CDbCriteria();
+//                                $criteria->compare('name', $_POST['Lecturers']['name']);
+//                                $exists_lectures = Lecturers::model()->find($criteria);
+//                                /**
+//                                 * Если лекция существует, сразу пишем в смежную
+//                                 * таблицу документ - лекция
+//                                 */
+//                                if($exists_lectures)
+//                                {
+//                                    /**
+//                                     * Пишем в смежную таблицу докумен - лекция
+//                                     */
+//                                    $document_lecturers = new DocumentLecturers();
+//                                    $document_lecturers->document_id = $model->id;
+//                                    $document_lecturers->lecturer_id = $exists_lectures->id;
+//                                    if($document_lecturers->save())
+//                                    {
+//                                        Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
+//                                        $this->redirect(Yii::app()->homeUrl);
+//                                    }
+//                                }
+//                                else
+//                                {
+//                                    /**
+//                                     * Если лекции нет в таблице, значит это
+//                                     * Новая лекция нужно ее сохранить
+//                                     */
+//                                    $lecturers = new Lecturers();
+//                                    $lecturers->attributes = $_POST['Lecturers'];
+//                                    /**
+//                                     * Если у пользователя выбран язык в куках, пишем код языка в бд
+//                                     */
+//                                     $lecturers->lang = Yii::app()->language;
+//                                    
+//                                    /**
+//                                     * Проверяем куда отправлять документ, на постмодерацию или на премодерацию
+//                                     */
+//                                    if(Yii::app()->user->isGuest)
+//                                    {
+//                                        /**
+//                                         * Если пользователь не авторизован, ставим статус 0(отправить на премодерацию)
+//                                         */
+//                                        $lecturers->status = 0;
+//                                    }
+//                                    elseif (Yii::app()->user->role === 'admin' || Yii::app()->user->role === 'moderator')
+//                                    {
+//                                        /**
+//                                         * Если документ загрузил модератор или админ
+//                                         * Сразу ставим статус 2 одобрен
+//                                         */
+//                                        $lecturers->status = 2;
+//                                    }
+//                                    else 
+//                                    {
+//                                        /**
+//                                         * Если пользователь авторизован, ставим статус 1 (отправить на постмодерацию)
+//                                         */
+//                                        $lecturers->status = 1;
+//                                    }
+//
+//                                    //echo CVarDumper::dump($lecturers->attributes, 10, TRUE);exit;
+//
+//                                    if($lecturers->save())
+//                                    {
+//                                            /**
+//                                             * Если лекция сохранена
+//                                             * Пишем в смежную таблицу докумен - лекция
+//                                             */
+//                                            $document_lecturers = new DocumentLecturers();
+//                                            $document_lecturers->document_id = $model->id;
+//                                            $document_lecturers->lecturer_id = $lecturers->id;
+//                                            if($document_lecturers->save())
+//                                            {
+//                                                Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
+//                                                $this->redirect(Yii::app()->homeUrl);
+//                                            }
+//                                    }
+//                                }
+//                                
+//                            }
+                            
+                            
+                            
+                            
+                            
                         }
                         
                     }
@@ -309,94 +314,105 @@ class DocumentsController extends Controller
                             if($document_lecturers->save())
                             {
                                 //echo CVarDumper::dump($document_lecturers->id, 10, TRUE);exit;
-                                Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
+                                Yii::app()->user->setFlash('message','Document is sent to the moderation - '.$success);
                                 $this->redirect(Yii::app()->homeUrl);
                             }
                         }
-                        elseif($_POST['Lecturers']['name'])
-                        {
-                            /**
-                             * Проверим на всякий случай есть ли лекция с таким названием
-                             * в таблице лекций
-                             */
-                            $criteria = new CDbCriteria();
-                            $criteria->compare('name', $_POST['Lecturers']['name']);
-                            $exists_lectures = Lecturers::model()->find($criteria);
-                            /**
-                             * Если лекция существует, сразу пишем в смежную
-                             * таблицу документ - лекция
-                             */
-                            if($exists_lectures)
-                            {
-                                 /**
-                                  * Пишем в смежную таблицу докумен - лекция
-                                  */
-                                 $document_lecturers = new DocumentLecturers();
-                                 $document_lecturers->document_id = $model->id;
-                                 $document_lecturers->lecturer_id = $exists_lectures->id;
-                                 if($document_lecturers->save())
-                                 {
-                                     Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
-                                     $this->redirect(Yii::app()->homeUrl);
-                                 }
-                            }
-                            else
-                            {
-                                /**
-                                 * Новая лекция нужно ее сохранить
-                                 */
-                                $lecturers = new Lecturers();
-                                $lecturers->attributes = $_POST['Lecturers'];
-                                /**
-                                 * Если у пользователя выбран язык в куках, пишем код языка в бд
-                                 */
-                                $lecturers->lang = Yii::app()->language;
-                                
-                                /**
-                                 * Проверяем куда отправлять документ, на постмодерацию или на премодерацию
-                                 */
-                                if(Yii::app()->user->isGuest)
-                                {
-                                    /**
-                                     * Если пользователь не авторизован, ставим статус 0(отправить на премодерацию)
-                                     */
-                                    $lecturers->status = 0;
-                                }
-                                elseif (Yii::app()->user->role === 'admin' || Yii::app()->user->role === 'moderator')
-                                {
-                                    /**
-                                     * Если документ загрузил модератор или админ
-                                     * Сразу ставим статус 2 одобрен
-                                     */
-                                    $lecturers->status = 2;
-                                }
-                                else 
-                                {
-                                    /**
-                                     * Если пользователь авторизован, ставим статус 1 (отправить на постмодерацию)
-                                     */
-                                    $lecturers->status = 1;
-                                }
-
-                                //echo CVarDumper::dump($lecturers->attributes, 10, TRUE);exit;
-
-                                if($lecturers->save())
-                                {
-                                     /**
-                                     * Пишем в смежную таблицу докумен - лекция
-                                     */
-                                    $document_lecturers = new DocumentLecturers();
-                                    $document_lecturers->document_id = $model->id;
-                                    $document_lecturers->lecturer_id = $lecturers->id;
-                                    if($document_lecturers->save())
-                                    {
-                                        Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
-                                        $this->redirect(Yii::app()->homeUrl);
-                                    }
-                                }
-                            }
-                            
-                        }
+//                        elseif($_POST['Lecturers']['name'])
+//                        {
+//                            /**
+//                             * Проверим на всякий случай есть ли лекция с таким названием
+//                             * в таблице лекций
+//                             */
+//                            $criteria = new CDbCriteria();
+//                            $criteria->compare('name', $_POST['Lecturers']['name']);
+//                            $exists_lectures = Lecturers::model()->find($criteria);
+//                            /**
+//                             * Если лекция существует, сразу пишем в смежную
+//                             * таблицу документ - лекция
+//                             */
+//                            if($exists_lectures)
+//                            {
+//                                 /**
+//                                  * Пишем в смежную таблицу докумен - лекция
+//                                  */
+//                                 $document_lecturers = new DocumentLecturers();
+//                                 $document_lecturers->document_id = $model->id;
+//                                 $document_lecturers->lecturer_id = $exists_lectures->id;
+//                                 if($document_lecturers->save())
+//                                 {
+//                                     Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
+//                                     $this->redirect(Yii::app()->homeUrl);
+//                                 }
+//                            }
+//                            else
+//                            {
+//                                /**
+//                                 * Новая лекция нужно ее сохранить
+//                                 */
+//                                $lecturers = new Lecturers();
+//                                $lecturers->attributes = $_POST['Lecturers'];
+//                                /**
+//                                 * Если у пользователя выбран язык в куках, пишем код языка в бд
+//                                 */
+//                                $lecturers->lang = Yii::app()->language;
+//                                
+//                                /**
+//                                 * Проверяем куда отправлять документ, на постмодерацию или на премодерацию
+//                                 */
+//                                if(Yii::app()->user->isGuest)
+//                                {
+//                                    /**
+//                                     * Если пользователь не авторизован, ставим статус 0(отправить на премодерацию)
+//                                     */
+//                                    $lecturers->status = 0;
+//                                }
+//                                elseif (Yii::app()->user->role === 'admin' || Yii::app()->user->role === 'moderator')
+//                                {
+//                                    /**
+//                                     * Если документ загрузил модератор или админ
+//                                     * Сразу ставим статус 2 одобрен
+//                                     */
+//                                    $lecturers->status = 2;
+//                                }
+//                                else 
+//                                {
+//                                    /**
+//                                     * Если пользователь авторизован, ставим статус 1 (отправить на постмодерацию)
+//                                     */
+//                                    $lecturers->status = 1;
+//                                }
+//
+//                                //echo CVarDumper::dump($lecturers->attributes, 10, TRUE);exit;
+//
+//                                if($lecturers->save())
+//                                {
+//                                     /**
+//                                     * Пишем в смежную таблицу докумен - лекция
+//                                     */
+//                                    $document_lecturers = new DocumentLecturers();
+//                                    $document_lecturers->document_id = $model->id;
+//                                    $document_lecturers->lecturer_id = $lecturers->id;
+//                                    if($document_lecturers->save())
+//                                    {
+//                                        Yii::app()->user->setFlash('message','Document is sent to the moderation'.$success);
+//                                        $this->redirect(Yii::app()->homeUrl);
+//                                    }
+//                                }
+//                            }
+//                            
+//                        }
+//                        
+//                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                     }
                     
                 }

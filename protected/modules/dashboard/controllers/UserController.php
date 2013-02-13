@@ -3,6 +3,7 @@
 class UserController extends DashController
 {
     public $defaultAction = 'admin';
+    public $layout='column2';
 
         /**
 	 * @return array action filters

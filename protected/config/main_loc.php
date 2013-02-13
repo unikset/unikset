@@ -7,9 +7,11 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Unikset local host',
+	'name'=>'Unikset',
         
         'sourceLanguage'=>'en',
+    
+        'defaultController'=>'documents/search',
     
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -36,6 +38,11 @@ return array(
 
 	// application components
 	'components'=>array(
+                'clientScript'=>array(
+                    'scriptMap'=>array(
+                        'jquery.js'=>false,
+                    ),
+                ),
                 'request'=>array(
                     'enableCookieValidation'=>true,
                     //'enableCsrfValidation'=>true,
@@ -116,12 +123,6 @@ return array(
                                         'showInFireBug' => true,
                                         'levels'=>'error, warning, trace, profile, info',
 				),
-                                array(
-                                    'class'=>'ext.yii-debug-toolbar.YiiDebugToolbarRoute',
-                                    'ipFilters'=>array('127.0.0.1'),
-                                ),
-
-				
 			),
 		),
 	),
@@ -132,5 +133,6 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
                 'languages'=>require(dirname(__FILE__).'/languages.php'),
+                'subdir'=>'',
 	),
 );

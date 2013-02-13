@@ -137,5 +137,6 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
                 'languages'=>require(dirname(__FILE__).'/languages.php'),
+                'subdir'=>'/unikset',
 	),
 );

@@ -79,10 +79,10 @@ function toggleLectureFilter()
 
 $(document).ready(function (){
     if($("#filter-link-1").is(":hidden"))
-        {
-            //alert(show_filter_country)
-            $('#document-filter-angle img').css('margin-left','200px');
-        }
+    {
+        //alert(show_filter_country)
+        $('#document-filter-angle img').css('margin-left','200px');
+    }
   $("#notuni").change(function(){
       $('#filter-link-1').hide();
       $('#document-filter-angle img').css('margin-left','200px');
@@ -90,7 +90,7 @@ $(document).ready(function (){
       $('#document-filter').slideUp('fast');
       $('#is_university_document').val('0');
       
-      $.post("/unikset/getCountry", { country: 'country' },
+      $.post("/getCountry", { country: 'country' },
                   function(data){
                      $(".locations").replaceWith("<div class=\"locations locations100\">"+data.loc1+"</div>");
                      $(".del_country").remove();
@@ -112,7 +112,7 @@ $(document).ready(function (){
   //Возвращаемся по цепочке истории к списку универов
   $('#del_region').live('click',function(){
       var country_id = $('#country_id').val();
-      $.post("/unikset/getRegions", { country_id: country_id },
+      $.post("/getRegions", { country_id: country_id },
                   function(data){  
                       $(".locations").replaceWith("<div class=\"locations locations51\">"+data.loc1+"</div>");
                       $(".univer").replaceWith("<div class=\"univer\">"+data.univers+"</div>");
@@ -127,7 +127,7 @@ $(document).ready(function (){
   
   $('#del_city').live('click',function(){
       var region_id = $('#region_id').val();
-      $.post("/unikset/getCities", { region_id: region_id },
+      $.post("/getCities", { region_id: region_id },
                   function(data){
                      $(".locations").replaceWith("<div class=\"locations locations51\">"+data.loc1+"</div>");
                      $(".univer100").replaceWith("<div class=\"univer\">"+data.univers+"</div>");
@@ -140,7 +140,7 @@ $(document).ready(function (){
   });
   
   $('#del_country').live('click',function(){
-      $.post("/unikset/getCountry", { country: 'country' },
+      $.post("/getCountry", { country: 'country' },
                   function(data){
                      $(".locations").replaceWith("<div class=\"locations locations100\">"+data.loc1+"</div>");
                      $(".del_country").remove();
@@ -157,7 +157,7 @@ $(document).ready(function (){
   });
   /************** для кнопок ***************************************/
   $('.region_btn').live('click',function(){
-      $.post("/unikset/getCountry", { country: 'country' },
+      $.post("/getCountry", { country: 'country' },
                   function(data){
                      $(".locations").replaceWith("<div class=\"locations locations100\">"+data.loc1+"</div>");
                      $(".del_country").remove();
@@ -173,7 +173,7 @@ $(document).ready(function (){
   });
   $('.city_btn').live('click',function(){
       var country_id = $('#country_id').val();
-      $.post("/unikset/getRegions", { country_id: country_id },
+      $.post("/getRegions", { country_id: country_id },
                   function(data){  
                       $(".locations").replaceWith("<div class=\"locations locations51\">"+data.loc1+"</div>");
                       $(".univer").replaceWith("<div class=\"univer\">"+data.univers+"</div>");
@@ -187,7 +187,7 @@ $(document).ready(function (){
   });
   $('.univer_btn').live('click',function(){
       var region_id = $('#region_id').val();
-      $.post("/unikset/getCities", { region_id: region_id },
+      $.post("/getCities", { region_id: region_id },
                   function(data){
                      $(".locations").replaceWith("<div class=\"locations locations51\">"+data.loc1+"</div>");
                      $(".univer100").replaceWith("<div class=\"univer\">"+data.univers+"</div>");
@@ -199,7 +199,7 @@ $(document).ready(function (){
                   }, "json");
   });
   $('.lecture_btn').live('click',function(){
-      $.post("/unikset/getDiscipline", { dis: 'dis' },
+      $.post("/getDiscipline", { dis: 'dis' },
                   function(data){
                      $('#discipline_id').val('');
                      $('.discipline').replaceWith('<div class="discipline">'+data.dis+'</div>');
@@ -216,7 +216,7 @@ $(document).ready(function (){
                         });
    //возвращение по цепочке истории для дисциплин                     
   $('#del_discipline').live('click',function(){
-      $.post("/unikset/getDiscipline", { dis: 'dis' },
+      $.post("/getDiscipline", { dis: 'dis' },
                   function(data){
                      $('#discipline_id').val('');
                      $('.discipline').replaceWith('<div class="discipline">'+data.dis+'</div>');

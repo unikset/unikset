@@ -2,6 +2,7 @@
 
 class DefaultController extends DashController
 {
+    public $layout='column2';
         /**
 	 * @return array action filters
 	 */

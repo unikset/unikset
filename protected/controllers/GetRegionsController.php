@@ -94,7 +94,7 @@ class GetRegionsController extends Controller
                 /**
                  * Заголовок блока
                  */                        
-                $loc1 .= '<h2>Select a region <span class="region_btn btn btn-small">Back to country</span></h2><br>';
+                $loc1 .= '<h2>Select a region </h2><br><span class="region_btn">&larr; Back to country</span><br>';
                 /**
                  * Если запрос вернул дочерние элементы локации, 
                  * формируем список
@@ -115,7 +115,7 @@ class GetRegionsController extends Controller
                             event.preventDefault();
                             var id = $(this).attr("href");
                             var region = $(this).html();
-                            $.post("/getCities", { region_id: id },
+                            $.post("'.Yii::app()->params['subdir'].'/getCities", { region_id: id },
                               function(data){
                                   $(".string-history > #l-h").append("<span class=\"del_region\">&rarr; "+region+" <span id=\"del_region\">x</span></span>");
                                   //$("<span id=\"del_region\">&rarr; "+region+"</span>").appendTo("#del_country")

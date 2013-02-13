@@ -27,18 +27,23 @@
 
         <div class="container" id="page">
             <div id="header">
-                <div id="logo"><a href="<?php echo Yii::app()->request->baseUrl; ?>"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.jpg" alt="Unikset"/></a></div>
+                
+                <div id="logo">
+                    <a href="<?php echo Yii::app()->createUrl(Yii::app()->defaultController);?>">
+                        <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.jpg" alt="Unikset"/>
+                    </a>
+                </div>
                 <div id="mainmenu">
                     <?php
                     $this->widget('zii.widgets.CMenu', array(
                         'items' => array(
-                            array('label' => Yii::t('app', 'Home'), 'url' => array('/site/index')),
-                            array('label' => Yii::t('app', 'About'), 'url' => array('/site/page', 'view' => 'about')),
-                            array('label' => Yii::t('app', 'Contact'), 'url' => array('/site/contact')),
+                            //array('label' => Yii::t('app', 'Home'), 'url' => array('/site/index')),
+                            //array('label' => Yii::t('app', 'About'), 'url' => array('/site/page', 'view' => 'about')),
+                            //array('label' => Yii::t('app', 'Contact'), 'url' => array('/site/contact')),
                             array('label' => Yii::t('app', 'Search'), 'url' => array('/documents/search')),
                             array('label' => Yii::t('app', 'Create'), 'url' => array('/documents/create')),
                             array('label' => Yii::t('app', 'Login'), 'url' => array('/user/login'), 'visible' => Yii::app()->user->isGuest),
-                            array('label' => Yii::t('app', 'Registration'), 'url' => array('/user/registration'), 'visible' => Yii::app()->user->isGuest),
+                            //array('label' => Yii::t('app', 'Registration'), 'url' => array('/user/registration'), 'visible' => Yii::app()->user->isGuest),
                             array('label' => Yii::t('app', 'Logout'), 'url' => array('/user/logout'), 'visible' => !Yii::app()->user->isGuest)
                         ),
                     ));

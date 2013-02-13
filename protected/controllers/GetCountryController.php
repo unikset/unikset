@@ -31,7 +31,7 @@ class GetCountryController extends Controller
                     event.preventDefault();
                     var id = $(this).attr("href");
                     var country = $(this).html();
-                    $.post("/getRegions", { country_id: id },
+                    $.post("'.Yii::app()->params['subdir'].'/getRegions", { country_id: id },
                       function(data){ 
                           $(".string-history > #l-h").append("<span class=\"del_country\">"+country+" <span id=\"del_country\">x</span></span>");
                           $(".locations").replaceWith("<div class=\"locations\">"+data.loc1+"</div>");

@@ -1,0 +1,21 @@
+.breadcrumbs{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.portlet-decoration{
+   margin-bottom: 10px;
+    border-bottom: 1px solid #999999; 
+}
+.portlet-title{
+    text-align: center;
+    font-weight: bold;   
+}
+.summary{
+    font-size: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid #f5f5f5;
+}
+span.required{
+    color: #C00;
+}
+

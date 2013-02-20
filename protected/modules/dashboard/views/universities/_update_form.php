@@ -30,7 +30,7 @@
         <?php //Выпадающие списки расположения университета?>
 	<div class="rows" id="country-block">
 		<?php echo CHtml::label('Country', 'country'); ?>
-		<?php echo CHtml::dropDownList('Country_id', '' , CHtml::listData($country, 'id', 'country'), array(
+		<?php echo CHtml::dropDownList('Country_id', $model->location->country_id , CHtml::listData($country, 'id', 'country'), array(
                                 'prompt'=>'Select country...',
                                 'onchange'=> CHtml::ajax(array(
                                             'type'=>'POST',
@@ -81,7 +81,7 @@
         <?php //регионы подтягиваются аяксом?>
         <div class="rows" id="region-block">
 		<?php echo CHtml::label('Region','Region_id'); ?>
-		<?php echo CHtml::dropDownList('Region_id', '' , array(), array(
+		<?php echo CHtml::dropDownList('Region_id', $model->location->region_id , CHtml::listData(Regions::model()->findAllByAttributes(array('country_id'=>$model->location->country_id)), 'id', 'region'), array(
                                 'prompt'=>'Select region...',
                                 'onchange'=> CHtml::ajax(array(
                                             'type'=>'POST',
@@ -124,8 +124,8 @@
         <?php //Города подтягиваются аяксом?>
         <div class="rows" id="city-block">
 		<?php echo CHtml::label('City','location_id'); ?>
-		<?php echo CHtml::activeDropDownList($model, 'location_id', array(), array('empty'=>'Select city...')); ?>
-		<?php echo CHtml::error($model,'location_id'); ?>
+		<?php echo CHtml::DropDownList('Universities[location_id]', $model->location_id, CHtml::listData(Cities::model()->findAllByAttributes(array('region_id'=>$model->location->region_id)), 'id', 'city'), array('empty'=>'Select city...')); ?>
+		<?php echo CHtml::error($model,'Universities_location_id'); ?>
 	</div> 
         <script>
             $('#Universities_location_id').click(function(){

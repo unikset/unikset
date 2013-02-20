@@ -5,18 +5,18 @@
 	'method'=>'get',
 )); ?>
 
-	<div class="row">
+	<div class="rows">
 		<?php echo $form->label($model,'id'); ?>
 		<?php echo $form->textField($model,'id'); ?>
 	</div>
 
-	<div class="row">
+	<div class="rows">
 		<?php echo $form->label($model,'name'); ?>
 		<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>255)); ?>
 	</div>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search'); ?>
+	<div class="rows buttons">
+		<?php echo CHtml::submitButton('Search', array('class'=>'btn')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

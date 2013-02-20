@@ -20,8 +20,6 @@ class DashController extends CController
         public function init() 
         {
             $this->layout = 'column2';
-            //Yii::app()->getClientScript()->registerCoreScript('jquery');
-            //Yii::app()->getClientScript()->registerCssFile('/css/admin/menu.css',  CClientScript::POS_HEAD);
             parent::init();
         }
 

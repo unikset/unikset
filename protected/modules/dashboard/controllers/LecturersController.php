@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * панель управления
+ * Контроллер управления лекциями
+ * Создание, редактирование, удаление, просмотр
+ * Дейстаие по умолчанию 'admin'
+ */
 class LecturersController extends DashController
 {
 	/**
@@ -53,21 +58,33 @@ class LecturersController extends DashController
 	 */
 	public function actionCreate()
 	{
-		$model=new Lecturers;
+            /**
+             * Модель лекций
+             */
+            $model=new Lecturers;
+            
+            /**
+             * Выбрать все дисциплины для выпадающего списка
+             */
+            $disciplines = Discipline::model()->findAll();
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+            // Uncomment the following line if AJAX validation is needed
+            // $this->performAjaxValidation($model);
 
-		if(isset($_POST['Lecturers']))
-		{
-			$model->attributes=$_POST['Lecturers'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+            if(isset($_POST['Lecturers']))
+            {
+                    $model->attributes=$_POST['Lecturers'];
+                    if($model->save())
+                    {
+                         $this->redirect(array('admin'));
+                    }
+                           
+            }
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+            $this->render('create',array(
+                    'model'=>$model,
+                    'disciplines'=>$disciplines,
+            ));
 	}
 
 	/**
@@ -78,6 +95,11 @@ class LecturersController extends DashController
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+                
+                /**
+                 * Выбрать все дисциплины для выпадающего списка
+                 */
+                $disciplines = Discipline::model()->findAll();
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -86,11 +108,15 @@ class LecturersController extends DashController
 		{
 			$model->attributes=$_POST['Lecturers'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+                        {
+                            $this->redirect(array('admin'));
+                        }
+				
 		}
 
 		$this->render('update',array(
 			'model'=>$model,
+                        'disciplines'=>$disciplines,
 		));
 	}
 

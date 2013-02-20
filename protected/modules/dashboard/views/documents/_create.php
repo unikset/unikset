@@ -9,7 +9,7 @@
         }
     }
 </script>
-<div class="form">
+<div class="form well">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'documents-form',
@@ -21,31 +21,31 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
+	<div class="rows">
                 <?php echo $form->labelEx($model, 'title'); 
 		      echo $form->textField($model,'title',array('size'=>60,'maxlength'=>255, 'class'=>'validate[required]')); 
 		      echo $form->error($model,'title'); ?>
 	</div>
 
-	<div class="row">
+	<div class="rows">
 		<?php echo $form->labelEx($model,'description'); ?>
 		<?php echo $form->textField($model,'description',array('size'=>60,'maxlength'=>1000, 'class'=>'validate[required]')); ?>
 		<?php echo $form->error($model,'description'); ?>
 	</div>
         
-        <div class="row">
+        <div class="rows">
                 <?php echo $form->labelEx($model, 'file_name'); 
                       echo $form->fileField($model, 'file_name', array('size'=>60,'maxlength'=>255,'class'=>'validate[required]')); 
 		      echo $form->error($model,'file_name'); ?>
 	</div>
         
-        <div class="row">
+        <div class="rows">
 		<?php echo $form->labelEx($model,'link'); ?>
 		<?php echo $form->textField($model,'link',array('size'=>60,'maxlength'=>1000,'class'=>'validate[required]')); ?>
 		<?php echo $form->error($model,'link'); ?>
 	</div>
 
-	<div class="row">
+	<div class="rows">
 		<?php echo $form->labelEx($model,'author_name'); ?>
 		<?php echo $form->textField($model,'author_name',array('size'=>60,'maxlength'=>255, 'class'=>'validate[required]')); ?>
 		<?php echo $form->error($model,'author_name'); ?>
@@ -54,7 +54,7 @@
         <div id="side_l" style="width:300px">
 
 
-            <div class="row">
+            <div class="rows">
 		<?php  echo $form->label($model,'is_university_document'); ?>
                 <?php  echo $form->dropDownList($model,'is_university_document', array(0=>'keine',1=>'eine'),
                         array('ajax'=>array(
@@ -79,7 +79,7 @@
                              ));?>
             </div>
             <?php //----------------страны ---------------------?>
-            <div class="row" id="loc_2" style="display:none">
+            <div class="rows" id="loc_2" style="display:none">
 		<?php  $country = new Countries();
                        echo $form->label($country,'country'); ?>
                 <?php  echo $form->dropDownList($country,'[2]id', array(),
@@ -107,7 +107,7 @@
                              ));?>
             </div>
             <?php //----------------регионы---------------------?>
-            <div class="row" id="loc_3" style="display:none">
+            <div class="rows" id="loc_3" style="display:none">
 		<?php  $region = new Regions();
                        echo $form->label($region,'region'); ?>
                 <?php  echo $form->dropDownList($region,'[3]id', array(),
@@ -135,7 +135,7 @@
                              ));?>
             </div>
             <?php //----------------------города-----------------------?>
-            <div class="row" id="loc_4" style="display:none">
+            <div class="rows" id="loc_4" style="display:none">
 		<?php  $city = new Cities();
                        echo $form->label($city,'city'); ?>
                 <?php  echo $form->dropDownList($city,'[4]id', array(),
@@ -160,7 +160,7 @@
                              ));?>
             </div>
             <?php //---------------Университеты --------------------?>
-            <div class="row" id="univer" style="display:none">
+            <div class="rows" id="univer" style="display:none">
 		<?php  $uni = new Universities();
                        echo $form->label($uni,'title'); ?>
                 <?php  echo $form->dropDownList($uni,'id', array(),
@@ -184,7 +184,7 @@
     
         <div>
             <?php //---------------Дисциплины -------------------------?>
-            <div class="row">
+            <div class="rows">
 		<?php $dis = new Discipline();
                       echo $form->label($dis,'title'); ?>
                 <?php //echo 'a';
@@ -209,7 +209,7 @@
                              )); ?>
             </div>
             <?php //-------------------Лекции ---------------------?>
-            <div class="row" id="lecturer" style="display:none; active:">
+            <div class="rows" id="lecturer" style="display:none; active:">
 		<?php $lect = new Lecturers();
                       echo $form->label($lect,'name'); ?>
                 <?php echo $form->dropDownList($lect,'id', array(),
@@ -252,8 +252,8 @@
             
         </div>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	<div class="rows buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn btn-success')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

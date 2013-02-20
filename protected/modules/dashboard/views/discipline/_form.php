@@ -1,4 +1,4 @@
-<div class="form">
+<div class="form well">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'discipline-form',
@@ -9,14 +9,14 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
+	<div class="rows">
 		<?php echo $form->labelEx($model,'title'); ?>
 		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>1000)); ?>
 		<?php echo $form->error($model,'title'); ?>
 	</div>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	<div class="rows buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn btn-success')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

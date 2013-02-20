@@ -13,6 +13,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Update Discipline <?php echo $model->id; ?></h1>
+<p class="lead well well-small">Update Discipline <?php echo $model->title; ?></p>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

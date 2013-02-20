@@ -6,8 +6,9 @@
 
 	<!-- blueprint CSS framework -->
         <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/admin/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/admin/css/style.css" rel="stylesheet" media="screen">
 	
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         
         <script src="<?php echo Yii::app()->request->baseUrl; ?>/css/admin/js/bootstrap.min.js"></script>
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title> 
@@ -44,8 +45,8 @@
                                     'submenuOptions'=>array('class'=>'dropdown-menu','role'=>"menu", 'aria-labelledby'=>"dLabel"),
                                 ),
                                 array('label'=>'Discipline', 'url'=>array('discipline/')),
-                                array('label'=>'Universities', 'url'=>array('universities/')),
                                 array('label'=>'Lecturers', 'url'=>array('lecturers/')),
+                                array('label'=>'Universities', 'url'=>array('universities/')),       
                                 array('label'=>'Documents', 'url'=>array('documents/')),
 				array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
                                 array('label'=>'Registration', 'url'=>array('/user/registration'), 'visible'=>Yii::app()->user->isGuest),

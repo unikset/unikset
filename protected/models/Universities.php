@@ -9,6 +9,7 @@
  * @property string $title_short
  * @property string $description
  * @property integer $location_id
+ * @property integer $featured
  *
  * The followings are the available model relations:
  * @property Locations $location
@@ -44,13 +45,13 @@ class Universities extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, title_short, description', 'required'),
+			array('title, title_short, description, featured', 'required'),
 			array('location_id', 'numerical', 'integerOnly'=>true),
 			array('title, title_short', 'length', 'max'=>255),
 			array('description', 'length', 'max'=>1000),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, title, title_short, description, location_id', 'safe', 'on'=>'search'),
+			array('id, title, title_short, description, location_id, featured', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -80,6 +81,7 @@ class Universities extends CActiveRecord
 			'title_short' => 'Title Short',
 			'description' => 'Description',
 			'location_id' => 'Location',
+                        'featured'=>'Profile',
 		);
 	}
 

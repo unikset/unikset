@@ -63,7 +63,7 @@ class GetLectureController extends Controller
                else
                {
                    echo CJSON::encode(array(
-                     'lect' => 'No lecturers',
+                     'lect' => 'No lecturers<br><span class="lecture_btn">&larr; Back to disciplines</span><br>',
                     ));
                     Yii::app()->end();
                }

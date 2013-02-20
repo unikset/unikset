@@ -1,16 +1,14 @@
 <?php
 
-class LocationsController extends DashController
+class ProfileUniversityController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	//public $layout='//layouts/column2';
-        
-        public $defaultAction = 'admin';
+	public $layout='//layouts/column2';
 
-        /**
+	/**
 	 * @return array action filters
 	 */
 	public function filters()
@@ -29,8 +27,16 @@ class LocationsController extends DashController
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'create','update', 'admin','delete', 'importCsv'),
-				'roles'=>array('admin'),
+				'actions'=>array('index','view'),
+				'users'=>array('*'),
+			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('create','update'),
+				'users'=>array('@'),
+			),
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions'=>array('admin','delete'),
+				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -55,76 +61,24 @@ class LocationsController extends DashController
 	 */
 	public function actionCreate()
 	{
-		$model=new Locations;
-                
-                //$types = LocationTypes::model()->findAll();
-                $types = LocationTypes::model()->findAll();
-                
-                $parents = Locations::model()->getParent();
+		$model=new ProfileUniversity;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Locations']))
+		if(isset($_POST['ProfileUniversity']))
 		{
-			$model->attributes=$_POST['Locations'];
-                        if(!$model->parent_id)
-                        {
-                            $model->parent_id = -1;
-                        }
+			$model->attributes=$_POST['ProfileUniversity'];
 			if($model->save())
-                        {
-                            $this->redirect(array('view','id'=>$model->id));
-                        }
-				
+				$this->redirect(array('view','id'=>$model->id_profile));
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
-                        'location_types'=>$types,
-                        'parents'=>$parents,
 		));
 	}
-        
-//        public function actionImportCsv()
-//        {
-//            
-//            
-//            //Если файл загружен
-//            if( isset($_FILES['csvfile']) ) 
-//            {
-//                 //Получаем дескриптор файла для чтения
-//                 $handle = fopen($_FILES['csvfile']['tmp_name'], 'r');
-//
-//                 if ($handle) 
-//                 {
-//                     $tmp = array();
-//                     //Если дескриптор получен, читаем файл
-//                     while( ($line = fgetcsv($handle, 0, ";")) != FALSE) 
-//                     {
-//                         $model = new Locations();
-//                         $model->parent_id     = $line[0];
-//                         $model->title         = $line[1];
-//                         $model->type_id       = $line[2];
-//                          //echo CVarDumper::dump($model, 10, TRUE);exit;
-//                         if(!$model->save())
-//                         {
-//                             break;
-//                             $errors[] = "Произощла ошибка при сохранении записи.";
-//                         }
-//                     }        
-//                 }
-//                 fclose($handle);
-//                 if(!$errors)
-//                 {
-//                     $this->redirect(array('admin'));
-//                 }
-//            }
-//            
-//            $this->render('upload_form');
-//        }
 
-        /**
+	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
@@ -136,11 +90,11 @@ class LocationsController extends DashController
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Locations']))
+		if(isset($_POST['ProfileUniversity']))
 		{
-			$model->attributes=$_POST['Locations'];
+			$model->attributes=$_POST['ProfileUniversity'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('view','id'=>$model->id_profile));
 		}
 
 		$this->render('update',array(
@@ -173,7 +127,7 @@ class LocationsController extends DashController
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Locations');
+		$dataProvider=new CActiveDataProvider('ProfileUniversity');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -184,15 +138,13 @@ class LocationsController extends DashController
 	 */
 	public function actionAdmin()
 	{
-		$countries = new Countries('search');
-                //echo CVarDumper::dump($countries, 10, TRUE); exit;
-                $regions = new Regions('search');
-                $cities = new Cities('search');
+		$model=new ProfileUniversity('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['ProfileUniversity']))
+			$model->attributes=$_GET['ProfileUniversity'];
 
 		$this->render('admin',array(
-			'countries'=>$countries,
-                        'regions'=>$regions,
-                        'cities'=>$cities,
+			'model'=>$model,
 		));
 	}
 
@@ -203,7 +155,7 @@ class LocationsController extends DashController
 	 */
 	public function loadModel($id)
 	{
-		$model=Locations::model()->findByPk($id);
+		$model=ProfileUniversity::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -215,7 +167,7 @@ class LocationsController extends DashController
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='locations-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-university-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

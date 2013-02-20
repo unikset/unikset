@@ -71,8 +71,9 @@ class GetRegionsController extends Controller
                             var univer_id = $(this).attr("href");
                             var university = $(this).html();
                             $("#university_id").val(univer_id);
-                            $("#del_univer").remove();
-                            $(".string-history").append(" <span id=\"del_univer\">&rarr; "+university+"<span>");
+                            $(".del_univer").remove();
+                            $(".string-history > #l-h").append(" <sapn class=\"del_univer\">&rarr; "+university+" <span id=\"del_univer\">x</span></span>");
+                            toggleCountryFilter();
                         });
                     </script>
                     ';

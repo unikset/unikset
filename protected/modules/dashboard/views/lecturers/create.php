@@ -10,6 +10,9 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Lecturers</h1>
+<p class="lead well well-small">Create Lecturers</p>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form', array(
+    'model'=>$model,
+    'disciplines'=>$disciplines,
+    )); ?>

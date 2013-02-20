@@ -1,12 +1,12 @@
 <?php
 $this->breadcrumbs=array(
-	'Lecturers'=>array('admin'),
+	'Profile Universities'=>array('index'),
 	'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'List Lecturers', 'url'=>array('index')),
-	array('label'=>'Create Lecturers', 'url'=>array('create')),
+	array('label'=>'List ProfileUniversity', 'url'=>array('index')),
+	array('label'=>'Create ProfileUniversity', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -15,7 +15,7 @@ $('.search-button').click(function(){
 	return false;
 });
 $('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('lecturers-grid', {
+	$.fn.yiiGridView.update('profile-university-grid', {
 		data: $(this).serialize()
 	});
 	return false;
@@ -23,7 +23,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<p class="lead well well-small">Manage Lecturers</p>
+<h1>Manage Profile Universities</h1>
 
 <p>
 You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
@@ -38,18 +38,13 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'lecturers-grid',
-        'itemsCssClass'=>'table',
+	'id'=>'profile-university-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'id',
-		'name',
-                array(
-                    'name'=>'discipline_id',
-                    'value'=>'$data->discipline->title',
-                ),
-                'status',
+		'id_profile',
+		'university_id',
+		'address',
 		array(
 			'class'=>'CButtonColumn',
 		),

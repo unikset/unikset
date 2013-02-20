@@ -1,6 +1,6 @@
 <?php $this->beginContent('/layouts/main'); ?>
 <div class="row-fluid">
-<div class="span3">
+<div class="span3 well">
 	<div id="sidebar">
 	<?php
 		$this->beginWidget('zii.widgets.CPortlet', array(

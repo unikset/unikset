@@ -11,6 +11,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Universities</h1>
+<p class="lead well well-small">Create Universities</p>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model, 'country'=>$country,)); ?>

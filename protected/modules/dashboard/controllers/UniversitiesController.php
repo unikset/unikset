@@ -217,6 +217,8 @@ class UniversitiesController extends DashController
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+                
+                $country = Countries::model()->findAll();
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -224,12 +226,17 @@ class UniversitiesController extends DashController
 		if(isset($_POST['Universities']))
 		{
 			$model->attributes=$_POST['Universities'];
+
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+                        {
+                            $this->redirect(array('admin'));
+                        }
+				
 		}
 
 		$this->render('update',array(
 			'model'=>$model,
+                        'country'=>$country,
 		));
 	}
         
@@ -306,6 +313,14 @@ class UniversitiesController extends DashController
         
         public function actionImportCsv()
         {
+            $cs = Yii::app()->getClientScript();
+            // Publishing and registering JavaScript file
+            $cs->registerScriptFile('/css/admin/js/bootstrap-fileupload.min.js',CClientScript::POS_HEAD);
+            // Publishing and registering CSS file
+            $cs->registerCssFile('/css/admin/css/bootstrap-fileupload.min.css');
+            
+            $cs->registerScript('initupload', "$('.fileupload').fileupload();", CClientScript::POS_READY);
+            
             //Если файл загружен
             if( isset($_FILES['csvfile']) ) 
             {
@@ -325,7 +340,7 @@ class UniversitiesController extends DashController
                      {
                          mb_detect_order('Windows-1251,ASCII,UTF-8');
                          $str = mb_convert_encoding($str, 'UTF-8', mb_detect_encoding($str));
-                         $line = explode(';', $str);
+                         $line = explode(';', trim($str));
                          //echo CVarDumper::dump(mb_detect_encoding($line[0]), 10, true); exit;
                          /**
                           * Получаем модель университетов
@@ -338,6 +353,7 @@ class UniversitiesController extends DashController
                           * Если нет, сохраняем новую страну и получаем ее id
                           */
                          $country = Countries::model()->find("country = '".$line[5]."'");
+                         //echo CVarDumper::dump($line, 10, TRUE); exit;
                          if($country)
                          {
                              //echo CVarDumper::dump($line, 10, TRUE); exit;

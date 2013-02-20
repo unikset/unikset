@@ -62,8 +62,9 @@ class GetCitiesController extends Controller
                             var univer_id = $(this).attr("href");
                             var university = $(this).html();
                             $("#university_id").val(univer_id);
-                            $("#del_univer").remove();
-                            $(".string-history").append("<span class=\"del_univer\">&rarr; "+university+" <span id=\"del_univer\">x</span></span>");
+                            $(".del_univer").remove();
+                            $(".string-history > #l-h").append("<span class=\"del_univer\">&rarr; "+university+" <span id=\"del_univer\">x</span></span>");
+                            toggleCountryFilter();
                         });
                     </script>
                     ';

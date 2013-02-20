@@ -7,6 +7,7 @@
  * @property integer $id
  * @property string $name
  * @property int $status
+ * @property int $discipline_id
  *
  * The followings are the available model relations:
  * @property DocumentLecturers[] $documentLecturers
@@ -39,12 +40,12 @@ class Lecturers extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name,status', 'required'),
-			array('name', 'length', 'max'=>255),
+			array('name, status, discipline_id', 'required'),
+			array('name', 'length', 'max'=>1000),
                         array('status', 'numerical', 'integerOnly'=>TRUE, 'max'=>5),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name,status', 'safe', 'on'=>'search'),
+			array('id, name, status, discipline_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,16 +57,11 @@ class Lecturers extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'documentLecturers' => array(self::HAS_MANY, 'DocumentLecturers', 'lecturer_id', 'joinType'=>'INNER JOIN'),
-                        'document' => array(self::HAS_MANY, 'Documents', array('document_id'=>'id'), 'through'=>'documentLecturers', 'joinType'=>'INNER JOIN'),
-                        'disciplineDocuments' => array(self::HAS_MANY, 'DisciplineDocuments', array('id'=>'document_id'), 'through'=>'document', 'joinType'=>'INNER JOIN'),
-                        'discipline' => array(self::HAS_MANY, 'Discipline', array('discipline_id'=>'id'), 'through'=>'disciplineDocuments', 'joinType'=>'INNER JOIN'),
-                    
-                        'documentLecturers2' => array(self::HAS_MANY, 'DocumentLecturers', 'lecturer_id', 'joinType'=>'INNER JOIN'),
-                        'document2' => array(self::HAS_MANY, 'Documents', array('document_id'=>'id'), 'through'=>'documentLecturers2', 'joinType'=>'INNER JOIN'),
-                        'universityDocument' => array(self::HAS_MANY, 'UniversityDocuments', array('id'=>'document_id'), 'through'=>'document2', 'joinType'=>'INNER JOIN'),
+			
+                        'document' => array(self::BELONGS_TO, 'Documents', 'lecture_id'),
+                        'discipline' => array(self::BELONGS_TO, 'Discipline', 'discipline_id'),
+                        'universityDocument' => array(self::HAS_MANY, 'UniversityDocuments', array('id'=>'document_id'), 'through'=>'document', 'joinType'=>'INNER JOIN'),
                         'university' => array(self::HAS_MANY, 'Universities', array('university_id'=>'id'), 'through'=>'universityDocument', 'joinType'=>'INNER JOIN'),
-                        'location' => array(self::HAS_MANY, 'Locations', array('location_id'=>'id') ,'through'=>'university', 'joinType'=>'INNER JOIN'),
 		);
 	}
 
@@ -75,8 +71,9 @@ class Lecturers extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'Name lecture',
+			'id' => 'ID lecture',
 			'name' => 'Name lecture',
+                        'discipline_id'=>'Discinlines'
 		);
 	}
 
@@ -93,6 +90,7 @@ class Lecturers extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
+                $criteria->compare('discipline_id',$this->discipline_id,true);
 
 		return new CActiveDataProvider($this, array());
 	}
@@ -198,7 +196,7 @@ class Lecturers extends CActiveRecord
         
         /**
          * Получение лекций по дисциплине
-         * @param int $dis идентификатор дисциплины
+         * @param int $discipline_id идентификатор дисциплины
          * 
          * @return object
          */
@@ -206,11 +204,11 @@ class Lecturers extends CActiveRecord
 	{
 		$criteria=new CDbCriteria;
                 
-                
+                $criteria->compare('discipline_id', $discipline_id);
                 
                 /**
                  * джойним дисциплины
-                 */
+                 
                 $criteria->with=array(
                         'discipline'=>array(
                             'select'=>'*',
@@ -219,9 +217,9 @@ class Lecturers extends CActiveRecord
                             'together'=>true,
                         ),
                     );
-                //echo CVarDumper::dump($criteria, 10 ,TRUE);exit;
+                //echo CVarDumper::dump($criteria, 10 ,TRUE);exit;*/
    
-                $criteria->condition='t.status = 2';
+                //$criteria->condition='t.status = 2';
                 
                 
                 
